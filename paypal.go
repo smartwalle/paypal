@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	PAY_PAL_SANDBOX_API_URL = "https://api.sandbox.paypal.com"
-	PAY_PAY_LVIE_API_URL    = "https://api.paypal.com"
+	k_PAY_PAL_SANDBOX_API_URL    = "https://api.sandbox.paypal.com"
+	k_PAY_PAL_PRODUCTION_API_URL = "https://api.paypal.com"
 )
 
 const (
@@ -22,22 +22,26 @@ const (
 )
 
 type PayPal struct {
-	clientId string
-	secret   string
-	apiBase  string
-	Token    *Token
+	clientId  string
+	secret    string
+	apiDomain string
+	Token     *Token
 }
 
-func New(clientId, secret, apiBase string) (client *PayPal) {
+func New(clientId, secret string, isProduction bool) (client *PayPal) {
 	client = &PayPal{}
 	client.clientId = clientId
 	client.secret = secret
-	client.apiBase = apiBase
+	if isProduction {
+		client.apiDomain = k_PAY_PAL_PRODUCTION_API_URL
+	} else {
+		client.apiDomain = k_PAY_PAL_SANDBOX_API_URL
+	}
 	return client
 }
 
-func (this *PayPal) API(paths ...string) string {
-	var path = this.apiBase
+func (this *PayPal) BuildAPI(paths ...string) string {
+	var path = this.apiDomain
 	for _, p := range paths {
 		p = strings.TrimSpace(p)
 		if len(p) > 0 {
@@ -55,7 +59,44 @@ func (this *PayPal) API(paths ...string) string {
 	return path
 }
 
-func (this *PayPal) createRequest(method, url string, payload interface{}) (*http.Request, error) {
+func (this *PayPal) doRequestWithAuth(method, url string, param, result interface{}) (err error) {
+	if this.Token == nil || this.Token.ExpiresAt.Before(time.Now()) {
+		this.Token, err = this.GetAccessToken()
+		if err != nil {
+			return err
+		}
+	}
+
+	var req *http.Request
+	req, err = request(method, url, param)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+this.Token.AccessToken)
+	return doRequest(req, result)
+}
+
+func (this *PayPal) GetAccessToken() (token *Token, err error) {
+	var api = this.BuildAPI(k_GET_ACCESS_TOKEN_API)
+
+	var p = url.Values{}
+	p.Add("grant_type", "client_credentials")
+
+	req, err := http.NewRequest("POST", api, strings.NewReader(p.Encode()))
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.SetBasicAuth(this.clientId, this.secret)
+
+	err = doRequest(req, &token)
+	if err != nil {
+		return nil, err
+	}
+	if token != nil {
+		token.ExpiresAt = time.Now().Add(time.Duration(token.ExpiresIn) * time.Second)
+	}
+	return token, err
+}
+
+func request(method, url string, payload interface{}) (*http.Request, error) {
 	var buf io.Reader
 	if payload != nil {
 		b, err := json.Marshal(payload)
@@ -68,7 +109,7 @@ func (this *PayPal) createRequest(method, url string, payload interface{}) (*htt
 	return http.NewRequest(method, url, buf)
 }
 
-func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
+func doRequest(req *http.Request, result interface{}) error {
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Accept-Language", "en_US")
 
@@ -133,42 +174,4 @@ func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
 	}
 
 	return err
-}
-
-func (this *PayPal) doRequestWithAuth(method, api string, param, result interface{}) (err error) {
-	if this.Token == nil || this.Token.ExpiresAt.Before(time.Now()) {
-		this.Token, err = this.GetAccessToken()
-		if err != nil {
-			return err
-		}
-	}
-
-	var req *http.Request
-	req, err = this.createRequest(method, api, param)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Authorization", "Bearer "+this.Token.AccessToken)
-	return this.doRequest(req, result)
-}
-
-func (this *PayPal) GetAccessToken() (token *Token, err error) {
-	var api = this.API(k_GET_ACCESS_TOKEN_API)
-
-	var p = url.Values{}
-	p.Add("grant_type", "client_credentials")
-
-	req, err := http.NewRequest("POST", api, strings.NewReader(p.Encode()))
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	req.SetBasicAuth(this.clientId, this.secret)
-
-	err = this.doRequest(req, &token)
-	if err != nil {
-		return nil, err
-	}
-	if token != nil {
-		token.ExpiresAt = time.Now().Add(time.Duration(token.ExpiresIn/2) * time.Second)
-		this.Token = token
-	}
-	return token, err
 }
