@@ -86,9 +86,13 @@ func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
 	case http.StatusOK, http.StatusCreated:
 		if result != nil {
 			if err = json.Unmarshal(data, result); err != nil {
+				if err.Error() == "json: cannot unmarshal number into Go value of type string" {
+					return nil
+				}
 				return err
 			}
 		}
+		return nil
 	case http.StatusUnauthorized:
 		var e = &IdentityError{}
 		e.Response = rep

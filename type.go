@@ -5,12 +5,22 @@ package paypal
 import "time"
 
 const (
-	K_PAYPAL_PAYMENT_METHOD_PAYPAL = "paypal"
+	K_PAYPAL_PAYMENT_METHOD_PAYPAL      = "paypal"
 	K_PAYPAL_PAYMENT_METHOD_CREDIT_CARD = "credit_card"
 )
 
+type PayerInfo struct {
+	Email           string           `json:"email"`
+	FirstName       string           `json:"first_name"`
+	LastName        string           `json:"last_name"`
+	PayerId         string           `json:"payer_id"`
+	ShippingAddress *ShippingAddress `json:"shipping_address,omitempty"`
+}
+
 type Payer struct {
-	PaymentMethod string `json:"payment_method"`
+	PaymentMethod string     `json:"payment_method"`
+	Status        string     `json:"status,omitempty"`
+	PayerInfo     *PayerInfo `json:"payer_info,omitempty"`
 }
 
 type AmountDetails struct {
@@ -35,7 +45,7 @@ type PaymentOptions struct {
 type Item struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	Quantity    int    `json:"quantity"`
+	Quantity    string `json:"quantity"`
 	Price       string `json:"price"`
 	Tax         string `json:"tax"`
 	SKU         string `json:"sku"`
@@ -58,6 +68,29 @@ type ItemList struct {
 	ShippingAddress *ShippingAddress `json:"shipping_address,omitempty"`
 }
 
+type TransactionFee struct {
+	Value    string `json:"value"`
+	Currency string `json:"currency"`
+}
+
+type Sale struct {
+	Id                        string          `json:"id"`
+	CreateTime                *time.Time      `json:"create_time"`
+	UpdateTime                *time.Time      `json:"update_time"`
+	Amount                    *Amount         `json:"amount"`
+	PaymentMode               string          `json:"payment_mode"`
+	State                     string          `json:"state"`
+	ProtectionEligibility     string          `json:"protection_eligibility"`
+	ProtectionEligibilityType string          `json:"protection_eligibility_type"`
+	ParentPayment             string          `json:"parent_payment"`
+	TransactionFee            *TransactionFee `json:"transaction_fee,omitempty"`
+	Links                     []*Link         `json:"links,omitempty"`
+}
+
+type RelatedResources struct {
+	Sale *Sale `json:"sale,omitempty"`
+}
+
 type Transaction struct {
 	Amount         *Amount         `json:"amount"`
 	Description    string          `json:"description,omitempty"`
@@ -68,7 +101,7 @@ type Transaction struct {
 	ItemList       *ItemList       `json:"item_list,omitempty"`
 
 	// 返回结果添加的字段
-	//RelatedResources   `json:"related_resources,omitempty"`
+	RelatedResources []*RelatedResources `json:"related_resources,omitempty"`
 }
 
 type RedirectURLs struct {
@@ -76,7 +109,7 @@ type RedirectURLs struct {
 	CancelURL string `json:"cancel_url"`
 }
 
-type Links struct {
+type Link struct {
 	Href   string `json:"href"`
 	Rel    string `json:"rel"`
 	Method string `json:"method"`
@@ -100,5 +133,5 @@ type Payment struct {
 	CreateTime *time.Time `json:"create_time,omitempty"`
 	State      string     `json:"state,omitempty"`
 	UpdateTime *time.Time `json:"update_time,omitempty"`
-	Links      []*Links   `json:"links,omitempty"`
+	Links      []*Link    `json:"links,omitempty"`
 }
