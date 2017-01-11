@@ -55,7 +55,7 @@ func (this *PayPal) API(paths ...string) string {
 	return path
 }
 
-func (this *PayPal) request(method, url string, payload interface{}) (*http.Request, error) {
+func (this *PayPal) createRequest(method, url string, payload interface{}) (*http.Request, error) {
 	var buf io.Reader
 	if payload != nil {
 		b, err := json.Marshal(payload)
@@ -135,12 +135,18 @@ func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
 	return err
 }
 
-func (this *PayPal) doRequestWithAuth(req *http.Request, result interface{}) (err error) {
+func (this *PayPal) doRequestWithAuth(method, api string, param, result interface{}) (err error) {
 	if this.Token == nil || this.Token.ExpiresAt.Before(time.Now()) {
 		this.Token, err = this.GetAccessToken()
 		if err != nil {
 			return err
 		}
+	}
+
+	var req *http.Request
+	req, err = this.createRequest(method, api, param)
+	if err != nil {
+		return err
 	}
 	req.Header.Set("Authorization", "Bearer "+this.Token.AccessToken)
 	return this.doRequest(req, result)

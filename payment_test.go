@@ -97,6 +97,10 @@ func getPayPal() *PayPal {
 //	fmt.Println(getPayPal().GetSaleDetails("84E33686SW065691F"))
 //}
 
-func TestPayPal_RefundSale(t *testing.T) {
-	fmt.Println(getPayPal().RefundSale("0GV820015U336030M", "08e03a33-b3d3-4f1c-9cb7-c5516198b58f", "30.11", "USD"))
+//func TestPayPal_RefundSale(t *testing.T) {
+//	fmt.Println(getPayPal().RefundSale("5SW33389HH3038001", "48787589677", "30.11", "USD"))
+//}
+
+func TestPayPal_GetRefundDetails(t *testing.T) {
+	fmt.Println(getPayPal().GetRefundDetails("7AG891841V2503230"))
 }
