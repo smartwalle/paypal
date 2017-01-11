@@ -4,11 +4,6 @@ package paypal
 
 import "time"
 
-const (
-	K_PAYPAL_PAYMENT_METHOD_PAYPAL      = "paypal"
-	K_PAYPAL_PAYMENT_METHOD_CREDIT_CARD = "credit_card"
-)
-
 type PayerInfo struct {
 	Email           string           `json:"email"`
 	FirstName       string           `json:"first_name"`
@@ -16,6 +11,11 @@ type PayerInfo struct {
 	PayerId         string           `json:"payer_id"`
 	ShippingAddress *ShippingAddress `json:"shipping_address,omitempty"`
 }
+
+const (
+	K_PAYPAL_PAYMENT_PAYER_METHOD_PAYPAL      = "paypal"
+	K_PAYPAL_PAYMENT_PAYER_METHOD_CREDIT_CARD = "credit_card"
+)
 
 type Payer struct {
 	PaymentMethod string     `json:"payment_method"`
@@ -73,6 +73,14 @@ type TransactionFee struct {
 	Currency string `json:"currency"`
 }
 
+const (
+	K_PAYPAL_SALE_STATUS_COMPLETED          = "completed"
+	K_PAYPAL_SALE_STATUS_PARTIALLY_REFUNDED = "partially_refunded"
+	K_PAYPAL_SALE_STATUS_PENDING            = "pending"
+	K_PAYPAL_SALE_STATUS_REFUNDED           = "refunded"
+	K_PAYPAL_SALE_STATUS_DENIED             = "denied"
+)
+
 type Sale struct {
 	Id                        string          `json:"id"`
 	CreateTime                *time.Time      `json:"create_time"`
@@ -85,6 +93,9 @@ type Sale struct {
 	ParentPayment             string          `json:"parent_payment"`
 	TransactionFee            *TransactionFee `json:"transaction_fee,omitempty"`
 	Links                     []*Link         `json:"links,omitempty"`
+	InvoiceNumber             string          `json:"invoice_number"`
+	Custom                    string          `json:"custom"`
+	ReceiptId                 string          `json:"receipt_id"`
 }
 
 type RelatedResources struct {
@@ -116,9 +127,15 @@ type Link struct {
 }
 
 const (
-	K_PAYPAL_INTENT_SALE      = "sale"
-	K_PAYPAL_INTENT_AUTHORIZE = "authorize"
-	K_PAYPAL_INTENT_ORDER     = "order"
+	K_PAYPAL_PAYMENT_INTENT_SALE      = "sale"
+	K_PAYPAL_PAYMENT_INTENT_AUTHORIZE = "authorize"
+	K_PAYPAL_PAYMENT_INTENT_ORDER     = "order"
+)
+
+const (
+	K_PAYPAL_PAYMENT_STATUS_CREATED  = "created"
+	K_PAYPAL_PAYMENT_STATUS_APPROVED = "approved"
+	K_PAYPAL_PAYMENT_STATUS_FAILED   = "failed"
 )
 
 type Payment struct {
@@ -129,9 +146,10 @@ type Payment struct {
 	RedirectURLs *RedirectURLs  `json:"redirect_urls"`
 
 	// 返回结果添加的字段
-	Id         string     `json:"id,omitempty"`
-	CreateTime *time.Time `json:"create_time,omitempty"`
-	State      string     `json:"state,omitempty"`
-	UpdateTime *time.Time `json:"update_time,omitempty"`
-	Links      []*Link    `json:"links,omitempty"`
+	Id            string     `json:"id,omitempty"`
+	CreateTime    *time.Time `json:"create_time,omitempty"`
+	State         string     `json:"state,omitempty"`
+	FailureReason string     `json:"failure_reason"`
+	UpdateTime    *time.Time `json:"update_time,omitempty"`
+	Links         []*Link    `json:"links,omitempty"`
 }

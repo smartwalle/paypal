@@ -24,16 +24,35 @@ const (
 type PayPal struct {
 	clientId string
 	secret   string
-	APIBase  string
+	apiBase  string
 	Token    *Token
 }
 
-func New(clientId, secret, API string) (client *PayPal) {
+func New(clientId, secret, apiBase string) (client *PayPal) {
 	client = &PayPal{}
 	client.clientId = clientId
 	client.secret = secret
-	client.APIBase = API
+	client.apiBase = apiBase
 	return client
+}
+
+func (this *PayPal) API(paths ...string) string {
+	var path = this.apiBase
+	for _, p := range paths {
+		p = strings.TrimSpace(p)
+		if len(p) > 0 {
+			if strings.HasSuffix(path, "/") {
+				path = path + p
+			} else {
+				if strings.HasPrefix(p, "/") {
+					path = path + p
+				} else {
+					path = path + "/" + p
+				}
+			}
+		}
+	}
+	return path
 }
 
 func (this *PayPal) request(method, url string, payload interface{}) (*http.Request, error) {
@@ -123,12 +142,12 @@ func (this *PayPal) doRequestWithAuth(req *http.Request, result interface{}) (er
 			return err
 		}
 	}
-	req.Header.Set("Authorization", "Bearer " + this.Token.AccessToken)
+	req.Header.Set("Authorization", "Bearer "+this.Token.AccessToken)
 	return this.doRequest(req, result)
 }
 
 func (this *PayPal) GetAccessToken() (token *Token, err error) {
-	var api = fmt.Sprintf("%s%s", this.APIBase, k_GET_ACCESS_TOKEN_API)
+	var api = this.API(k_GET_ACCESS_TOKEN_API)
 
 	var p = url.Values{}
 	p.Add("grant_type", "client_credentials")
