@@ -1,6 +1,13 @@
+// https://developer.paypal.com/docs/api/payments/#definitions
+
 package paypal
 
 import "time"
+
+const (
+	K_PAYPAL_PAYMENT_METHOD_PAYPAL = "paypal"
+	K_PAYPAL_PAYMENT_METHOD_CREDIT_CARD = "credit_card"
+)
 
 type Payer struct {
 	PaymentMethod string `json:"payment_method"`
@@ -74,6 +81,12 @@ type Links struct {
 	Rel    string `json:"rel"`
 	Method string `json:"method"`
 }
+
+const (
+	K_PAYPAL_INTENT_SALE      = "sale"
+	K_PAYPAL_INTENT_AUTHORIZE = "authorize"
+	K_PAYPAL_INTENT_ORDER     = "order"
+)
 
 type Payment struct {
 	Intent       string         `json:"intent"`

@@ -9,7 +9,7 @@ func TestPayment(te *testing.T) {
 	var c = New("AT2V6Y2Kh7mFN5tE_c-BdeAyqS4HBcGF4Kl8seWPvA-jhY2CW6MMSr-t-mvf9F6GNFkobgtp6L2GDPxI", "EDjPl5bFyIrydUS__Nsd34l8t4O7aPEsd8Z_xY7cI_5_jTl1jt-Wn6QnzaB6-J3coWtrNoIc31DrblC3", PAY_PAL_SANDBOX_API_URL)
 
 	var p = &Payment{}
-	p.Intent = "sale"
+	p.Intent = K_PAYPAL_INTENT_SALE
 	p.Payer = &Payer{}
 	p.Payer.PaymentMethod = "paypal"
 	p.RedirectURLs = &RedirectURLs{}
