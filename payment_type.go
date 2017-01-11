@@ -98,6 +98,18 @@ type Sale struct {
 	ReceiptId                 string          `json:"receipt_id"`
 }
 
+type Refund struct {
+	Id            string     `json:"id"`
+	CreateTime    *time.Time `json:"create_time"`
+	UpdateTime    *time.Time `json:"update_time"`
+	State         string     `json:"state"`
+	Amount        *Amount    `json:"amount"`
+	SaleId        string     `json:"sale_id"`
+	ParentPayment string     `json:"parent_payment"`
+	InvoiceNumber string     `json:"invoice_number"`
+	Links         []*Link    `json:"links,omitempty"`
+}
+
 type RelatedResources struct {
 	Sale *Sale `json:"sale,omitempty"`
 }

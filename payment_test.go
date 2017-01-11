@@ -15,9 +15,9 @@ func getPayPal() *PayPal {
 	return paypal
 }
 
-//func TestCreatePayment(t *testing.T) {
+//func TestPayPal_CreatePayment(t *testing.T) {
 //	var p = &Payment{}
-//	p.Intent = K_PAYPAL_INTENT_SALE
+//	p.Intent = K_PAYPAL_PAYMENT_INTENT_SALE
 //	p.Payer = &Payer{}
 //	p.Payer.PaymentMethod = "paypal"
 //	p.RedirectURLs = &RedirectURLs{}
@@ -80,19 +80,23 @@ func getPayPal() *PayPal {
 //	fmt.Println(getPayPal().CreatePayment(p))
 //}
 
-//func TestGetPaymentList(t *testing.T) {
+//func TestPayPal_GetPaymentList(t *testing.T) {
 //	var p = &PaymentListParam{}
 //	fmt.Println(getPayPal().GetPaymentList(p))
 //}
-
-//func TestGetPaymentDetails(t *testing.T) {
+//
+//func TestPayPal_GetPaymentDetails(t *testing.T) {
 //	fmt.Println(getPayPal().GetPaymentDetails("PAY-1SJ16214TY566804MLB26S5I"))
 //}
-
-//func TestExecutePayment(t *testing.T) {
-//	fmt.Println(getPayPal().ExecutePayment("PAY-0E809244MY2080201LB26LWI", "XV9HF9K25FB38"))
+//
+//func TestPayPal_ExecuteApprovedPayment(t *testing.T) {
+//	fmt.Println(getPayPal().ExecuteApprovedPayment("PAY-0E809244MY2080201LB26LWI", "XV9HF9K25FB38"))
+//}
+//
+//func TestPayPal_GetSaleDetails(t *testing.T) {
+//	fmt.Println(getPayPal().GetSaleDetails("84E33686SW065691F"))
 //}
 
-func TestGetSale(t *testing.T) {
-	fmt.Println(getPayPal().GetSaleDetails("84E33686SW065691F"))
+func TestPayPal_RefundSale(t *testing.T) {
+	fmt.Println(getPayPal().RefundSale("0GV820015U336030M", "08e03a33-b3d3-4f1c-9cb7-c5516198b58f", "30.11", "USD"))
 }

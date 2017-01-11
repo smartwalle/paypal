@@ -115,6 +115,30 @@ func (this *PayPal) GetSaleDetails(saleId string) (results *Sale, err error) {
 		return nil, err
 	}
 	err = this.doRequestWithAuth(req, &results)
+	return results, err
+}
 
+type refundSaleParam struct {
+	Amount struct {
+		Total    string `json:"total"`
+		Currency string `json:"currency"`
+	} `json:"amount"`
+	InvoiceNumber string `json:"invoice_number"`
+}
+
+// RefundSale https://developer.paypal.com/docs/api/payments/#sale_refund
+func (this *PayPal) RefundSale(saleId, invoiceNumber, total, currency string) (results *Refund, err error) {
+	var p = &refundSaleParam{}
+	p.Amount.Total = total
+	p.Amount.Currency = currency
+	p.InvoiceNumber = invoiceNumber
+
+	var api = this.API(k_SALE_API, saleId, "/refund")
+	var req *http.Request
+	req, err = this.request("POST", api, p)
+	if err != nil {
+		return nil, err
+	}
+	err = this.doRequestWithAuth(req, &results)
 	return results, err
 }
