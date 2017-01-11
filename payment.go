@@ -89,9 +89,9 @@ func (this *PayPal) GetPaymentDetails(paymentId string) (results *Payment, err e
 	return results, err
 }
 
-// ExecutePayment https://developer.paypal.com/docs/api/payments/#payment_execute
+// ExecuteApprovedPayment https://developer.paypal.com/docs/api/payments/#payment_execute
 // 从回调 URL 中获取 PayerId
-func (this *PayPal) ExecutePayment(paymentId, payerId string) (results *Payment, err error) {
+func (this *PayPal) ExecuteApprovedPayment(paymentId, payerId string) (results *Payment, err error) {
 	var p = map[string]interface{}{}
 	p["payer_id"] = payerId
 

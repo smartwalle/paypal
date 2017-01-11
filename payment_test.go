@@ -3,13 +3,14 @@ package paypal
 import (
 	"fmt"
 	"testing"
+	"github.com/smartwalle/go-uuid/uuid"
 )
 
 var paypal *PayPal
 
 func getPayPal() *PayPal {
 	if paypal == nil {
-		paypal = New("AT2V6Y2Kh7mFN5tE_c-BdeAyqS4HBcGF4Kl8seWPvA-jhY2CW6MMSr-t-mvf9F6GNFkobgtp6L2GDPxI", "EDjPl5bFyIrydUS__Nsd34l8t4O7aPEsd8Z_xY7cI_5_jTl1jt-Wn6QnzaB6-J3coWtrNoIc31DrblC3", PAY_PAL_SANDBOX_API_URL)
+		paypal = New("AS8XSa9JrOJ3rf0kxVqCgRLIlMpgaKhLTShpYxISysR1VpnN6AMLfrvj-upOMuNkXdb9bTIzsFH4umB5", "ECA3_usif2DUgGxgcBTddOKgg2rbjUT7J3B3-Ud9z9y54AK9mYTDDFyadmMLSo1QOiO2rci99FSq1PbZ", PAY_PAL_SANDBOX_API_URL)
 	}
 	return paypal
 }
@@ -21,7 +22,7 @@ func TestCreatePayment(t *testing.T) {
 	p.Payer.PaymentMethod = "paypal"
 	p.RedirectURLs = &RedirectURLs{}
 	p.RedirectURLs.CancelURL = "http://www.baidu.com"
-	p.RedirectURLs.ReturnURL = "http://www.qq.com"
+	p.RedirectURLs.ReturnURL = "http://127.0.0.1:9001/paypal"
 	var ti = &Transaction{}
 	p.Transactions = []*Transaction{ti}
 
@@ -38,7 +39,7 @@ func TestCreatePayment(t *testing.T) {
 
 	ti.Description = "This is the payment transaction description."
 	ti.Custom = "EBAY_EMS_90048630024435"
-	ti.InvoiceNumber = "48787589673"
+	ti.InvoiceNumber = uuid.New()
 
 	ti.PaymentOptions = &PaymentOptions{}
 	ti.PaymentOptions.AllowedPaymentMethod = "INSTANT_FUNDING_SOURCE"
@@ -89,5 +90,5 @@ func TestCreatePayment(t *testing.T) {
 //}
 
 //func TestExecutePayment(t *testing.T) {
-//	fmt.Println(getPayPal().ExecutePayment("PAY-6B21970242729815FLB243DA", "XV9HF9K25FB38"))
+//	fmt.Println(getPayPal().ExecutePayment("PAY-0E809244MY2080201LB26LWI", "XV9HF9K25FB38"))
 //}
