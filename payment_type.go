@@ -161,7 +161,7 @@ type Payment struct {
 	Id            string     `json:"id,omitempty"`
 	CreateTime    *time.Time `json:"create_time,omitempty"`
 	State         string     `json:"state,omitempty"`
-	FailureReason string     `json:"failure_reason"`
+	FailureReason string     `json:"failure_reason,omitempty"`
 	UpdateTime    *time.Time `json:"update_time,omitempty"`
 	Links         []*Link    `json:"links,omitempty"`
 }
