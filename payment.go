@@ -55,14 +55,8 @@ func (this *PaymentListParam) QueryString() string {
 	return "?" + p.Encode()
 }
 
-type PaymentListResp struct {
-	Payments []*Payment `json:"payments"`
-	Count    int        `json:"count"`
-	NextId   string     `json:"next_id"`
-}
-
 // GetPaymentList https://developer.paypal.com/docs/api/payments/#payment_list
-func (this *PayPal) GetPaymentList(param *PaymentListParam) (results *PaymentListResp, err error) {
+func (this *PayPal) GetPaymentList(param *PaymentListParam) (results *PaymentList, err error) {
 	var api = this.BuildAPI(k_PAYMENT_API) + param.QueryString()
 	err = this.doRequestWithAuth("GET", api, nil, &results)
 	return results, err

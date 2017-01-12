@@ -165,3 +165,9 @@ type Payment struct {
 	UpdateTime    *time.Time `json:"update_time,omitempty"`
 	Links         []*Link    `json:"links,omitempty"`
 }
+
+type PaymentList struct {
+	Payments []*Payment `json:"payments"`
+	Count    int        `json:"count"`
+	NextId   string     `json:"next_id"`
+}

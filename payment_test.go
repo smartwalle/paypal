@@ -1,8 +1,8 @@
 package paypal
 
 import (
-	"fmt"
-	"testing"
+	//"fmt"
+	//"testing"
 	//"github.com/smartwalle/go-uuid/uuid"
 )
 
@@ -100,7 +100,7 @@ func getPayPal() *PayPal {
 //func TestPayPal_RefundSale(t *testing.T) {
 //	fmt.Println(getPayPal().RefundSale("5SW33389HH3038001", "48787589677", "30.11", "USD"))
 //}
-
-func TestPayPal_GetRefundDetails(t *testing.T) {
-	fmt.Println(getPayPal().GetRefundDetails("7AG891841V2503230"))
-}
+//
+//func TestPayPal_GetRefundDetails(t *testing.T) {
+//	fmt.Println(getPayPal().GetRefundDetails("7AG891841V2503230"))
+//}

@@ -104,7 +104,6 @@ func request(method, url string, payload interface{}) (*http.Request, error) {
 			return nil, err
 		}
 		buf = bytes.NewBuffer(b)
-		fmt.Println(string(b))
 	}
 	return http.NewRequest(method, url, buf)
 }
@@ -162,6 +161,11 @@ func doRequest(req *http.Request, result interface{}) error {
 			}
 		}
 		return e
+	case http.StatusNoContent:
+		if req.Method == "DELETE" {
+			return nil
+		}
+		fallthrough
 	default:
 		var e = &ResponseError{}
 		e.Response = rep
