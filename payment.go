@@ -19,6 +19,26 @@ func (this *PayPal) CreatePayment(payment *Payment) (results *Payment, err error
 	return results, err
 }
 
+func (this *PayPal) ExpressCreatePayment(total, currency, cancelURL, returnURL string) (results *Payment, err error) {
+	var p = &Payment{}
+	p.Intent = K_PAYPAL_PAYMENT_INTENT_SALE
+	p.Payer = &Payer{}
+	p.Payer.PaymentMethod = "paypal"
+	p.RedirectURLs = &RedirectURLs{}
+	p.RedirectURLs.CancelURL = cancelURL
+	p.RedirectURLs.ReturnURL = returnURL
+
+	var transaction = &Transaction{}
+	p.Transactions = []*Transaction{transaction}
+
+	transaction.Amount = &Amount{}
+	transaction.Amount.Total = total
+	transaction.Amount.Currency = currency
+
+	results, err = this.CreatePayment(p)
+	return results, err
+}
+
 type PaymentListParam struct {
 	Count      int
 	StartId    string

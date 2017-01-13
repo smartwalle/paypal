@@ -15,6 +15,9 @@ func getPayPal() *PayPal {
 	return paypal
 }
 
+//func TestPayPal_ExpressCreatePayment(t *testing.T) {
+//	fmt.Println(getPayPal().ExpressCreatePayment("10", "USD", "http://www.baidu.com", "http://192.168.192.250:3000/paypal"))
+//}
 //func TestPayPal_CreatePayment(t *testing.T) {
 //	var p = &Payment{}
 //	p.Intent = K_PAYPAL_PAYMENT_INTENT_SALE
@@ -23,41 +26,42 @@ func getPayPal() *PayPal {
 //	p.RedirectURLs = &RedirectURLs{}
 //	p.RedirectURLs.CancelURL = "http://www.baidu.com"
 //	p.RedirectURLs.ReturnURL = "http://127.0.0.1:9001/paypal"
-//	var ti = &Transaction{}
-//	p.Transactions = []*Transaction{ti}
 //
-//	ti.Amount = &Amount{}
-//	ti.Amount.Total = "30.11"
-//	ti.Amount.Currency = "USD"
-//	ti.Amount.Details = &AmountDetails{}
-//	ti.Amount.Details.Subtotal = "30.00"
-//	ti.Amount.Details.Tax = "0.07"
-//	ti.Amount.Details.Shipping = "0.03"
-//	ti.Amount.Details.HandlingFee = "1.00"
-//	ti.Amount.Details.ShippingDiscount = "-1.00"
-//	ti.Amount.Details.Insurance = "0.01"
+//	var transaction = &Transaction{}
+//	p.Transactions = []*Transaction{transaction}
 //
-//	ti.Description = "This is the payment transaction description."
-//	ti.Custom = "EBAY_EMS_90048630024435"
-//	ti.InvoiceNumber = uuid.New()
+//	transaction.Amount = &Amount{}
+//	transaction.Amount.Total = "30.11"
+//	transaction.Amount.Currency = "USD"
+//	transaction.Amount.Details = &AmountDetails{}
+//	transaction.Amount.Details.Subtotal = "30.00"
+//	transaction.Amount.Details.Tax = "0.07"
+//	transaction.Amount.Details.Shipping = "0.03"
+//	transaction.Amount.Details.HandlingFee = "1.00"
+//	transaction.Amount.Details.ShippingDiscount = "-1.00"
+//	transaction.Amount.Details.Insurance = "0.01"
 //
-//	ti.PaymentOptions = &PaymentOptions{}
-//	ti.PaymentOptions.AllowedPaymentMethod = "INSTANT_FUNDING_SOURCE"
-//	ti.SoftDescriptor = "ECHI5786786"
+//	transaction.Description = "This is the payment transaction description."
+//	transaction.Custom = "EBAY_EMS_90048630024435"
+//	transaction.InvoiceNumber = uuid.New()
 //
-//	ti.ItemList = &ItemList{}
-//	ti.ItemList.ShippingAddress = &ShippingAddress{}
-//	ti.ItemList.ShippingAddress.RecipientName = "Hello World"
-//	ti.ItemList.ShippingAddress.Line1 = "4thFloor"
-//	ti.ItemList.ShippingAddress.Line2 = "unit#34"
-//	ti.ItemList.ShippingAddress.City = "SAn Jose"
-//	ti.ItemList.ShippingAddress.CountryCode = "US"
-//	ti.ItemList.ShippingAddress.PostalCode = "95131"
-//	ti.ItemList.ShippingAddress.Phone = "011862212345678"
-//	ti.ItemList.ShippingAddress.State = "CA"
+//	transaction.PaymentOptions = &PaymentOptions{}
+//	transaction.PaymentOptions.AllowedPaymentMethod = "INSTANT_FUNDING_SOURCE"
+//	transaction.SoftDescriptor = "ECHI5786786"
+//
+//	transaction.ItemList = &ItemList{}
+//	transaction.ItemList.ShippingAddress = &ShippingAddress{}
+//	transaction.ItemList.ShippingAddress.RecipientName = "Hello World"
+//	transaction.ItemList.ShippingAddress.Line1 = "4thFloor"
+//	transaction.ItemList.ShippingAddress.Line2 = "unit#34"
+//	transaction.ItemList.ShippingAddress.City = "SAn Jose"
+//	transaction.ItemList.ShippingAddress.CountryCode = "US"
+//	transaction.ItemList.ShippingAddress.PostalCode = "95131"
+//	transaction.ItemList.ShippingAddress.Phone = "011862212345678"
+//	transaction.ItemList.ShippingAddress.State = "CA"
 //
 //	var i1, i2 = &Item{}, &Item{}
-//	ti.ItemList.Items = []*Item{i1, i2}
+//	transaction.ItemList.Items = []*Item{i1, i2}
 //
 //	i1.Name = "hat"
 //	i1.Description = "Brown color hat"
@@ -77,7 +81,8 @@ func getPayPal() *PayPal {
 //
 //	p.NoteToPayer = "Contact us for any questions on your order."
 //
-//	fmt.Println(getPayPal().CreatePayment(p))
+//	var payment, err = getPayPal().CreatePayment(p)
+//	fmt.Println(payment, err)
 //}
 
 //func TestPayPal_GetPaymentList(t *testing.T) {
