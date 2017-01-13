@@ -97,7 +97,7 @@ var payment, err = ExpressCreatePayment(total, currency, cancelURL, returnURL)
 ...
 ```
 
-##### 1. 高级接口
+##### 2. 高级接口
 
 ```Golang
 var p = &Payment{}
