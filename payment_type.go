@@ -45,7 +45,7 @@ type PaymentOptions struct {
 type Item struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	Quantity    string `json:"quantity"`
+	Quantity    interface{} `json:"quantity"`
 	Price       string `json:"price"`
 	Tax         string `json:"tax"`
 	SKU         string `json:"sku"`
@@ -163,7 +163,7 @@ type Payment struct {
 	State         string     `json:"state,omitempty"`
 	FailureReason string     `json:"failure_reason,omitempty"`
 	UpdateTime    *time.Time `json:"update_time,omitempty"`
-	Links         []*Link    `json:"links,omitempty"`
+	Links         []*Link    `json:"links"`
 }
 
 type PaymentList struct {
