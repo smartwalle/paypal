@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+const (
+	K_ERR_TYPE_VALIDATION_ERROR = "VALIDATION_ERROR"
+)
+
 type ResponseError struct {
 	Response        *http.Response `json:"-"`
 	Name            string         `json:"name"`
