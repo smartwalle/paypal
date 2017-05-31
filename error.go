@@ -7,6 +7,7 @@ import (
 
 const (
 	K_ERR_TYPE_VALIDATION_ERROR = "VALIDATION_ERROR"
+	K_ERR_TYPE_INSTRUMENT_DECLINED = "INSTRUMENT_DECLINED"
 )
 
 type ResponseError struct {

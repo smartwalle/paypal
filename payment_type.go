@@ -124,7 +124,13 @@ type Transaction struct {
 	ItemList       *ItemList       `json:"item_list,omitempty"`
 
 	// 返回结果添加的字段
+
 	RelatedResources []*RelatedResources `json:"related_resources,omitempty"`
+}
+
+type Payee struct {
+	MerchantID string `json:"merchant_id"`
+	Email      string `json:"email"`
 }
 
 type RedirectURLs struct {
