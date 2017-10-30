@@ -43,13 +43,13 @@ type PaymentOptions struct {
 }
 
 type Item struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	Name        string      `json:"name"`
+	Description string      `json:"description"`
 	Quantity    interface{} `json:"quantity"`
-	Price       string `json:"price"`
-	Tax         string `json:"tax"`
-	SKU         string `json:"sku"`
-	Currency    string `json:"currency"`
+	Price       string      `json:"price"`
+	Tax         string      `json:"tax"`
+	SKU         string      `json:"sku"`
+	Currency    string      `json:"currency"`
 }
 
 type ShippingAddress struct {
@@ -157,11 +157,12 @@ const (
 )
 
 type Payment struct {
-	Intent       string         `json:"intent"`
-	Payer        *Payer         `json:"payer"`
-	Transactions []*Transaction `json:"transactions"`
-	NoteToPayer  string         `json:"note_to_payer,omitempty"`
-	RedirectURLs *RedirectURLs  `json:"redirect_urls"`
+	Intent              string         `json:"intent"`
+	ExperienceProfileId string         `json:"experience_profile_id"`
+	Payer               *Payer         `json:"payer"`
+	Transactions        []*Transaction `json:"transactions"`
+	NoteToPayer         string         `json:"note_to_payer,omitempty"`
+	RedirectURLs        *RedirectURLs  `json:"redirect_urls"`
 
 	// 返回结果添加的字段
 	Id            string     `json:"id,omitempty"`
