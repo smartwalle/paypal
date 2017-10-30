@@ -158,7 +158,7 @@ const (
 
 type Payment struct {
 	Intent              string         `json:"intent"`
-	ExperienceProfileId string         `json:"experience_profile_id"`
+	ExperienceProfileId string         `json:"experience_profile_id,omitempty"`
 	Payer               *Payer         `json:"payer"`
 	Transactions        []*Transaction `json:"transactions"`
 	NoteToPayer         string         `json:"note_to_payer,omitempty"`
