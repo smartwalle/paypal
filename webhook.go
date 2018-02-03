@@ -52,6 +52,7 @@ func (this *PayPal) DeleteWebhook(webhookId string) (results *Webhook, err error
 	return results, err
 }
 
+// verifyWebhookSignature https://developer.paypal.com/docs/api/webhooks/#verify-webhook-signature_post
 func (this *PayPal) verifyWebhookSignature(param *verifyWebhookSignatureParam) (results *verifyWebhookSignatureResponse, err error) {
 	var api = this.BuildAPI(k_VERITY_WEBHOOK_SIGNATURE_APPI)
 	err = this.doRequestWithAuth("POST", api, param, &results)
@@ -65,6 +66,9 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 	if err != nil || len(body) == 0 {
 		return nil, err
 	}
+
+	fmt.Println("=============")
+	fmt.Println(string(body))
 
 	if err = json.Unmarshal(body, &event); err != nil {
 		return nil, err

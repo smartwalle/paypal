@@ -3,9 +3,8 @@
 package paypal
 
 import (
-	"time"
-	"net/url"
 	"fmt"
+	"net/url"
 )
 
 type PayerInfo struct {
@@ -28,17 +27,17 @@ type Payer struct {
 }
 
 type AmountDetails struct {
-	Subtotal         string `json:"subtotal"`
-	Tax              string `json:"tax"`
-	Shipping         string `json:"shipping"`
-	HandlingFee      string `json:"handling_fee"`
-	ShippingDiscount string `json:"shipping_discount"`
-	Insurance        string `json:"insurance"`
+	Subtotal         string `json:"subtotal,omitempty"`
+	Tax              string `json:"tax,omitempty"`
+	Shipping         string `json:"shipping,omitempty"`
+	HandlingFee      string `json:"handling_fee,omitempty"`
+	ShippingDiscount string `json:"shipping_discount,omitempty"`
+	Insurance        string `json:"insurance,omitempty"`
 }
 
 type Amount struct {
-	Total    string         `json:"total"`
-	Currency string         `json:"currency"`
+	Total    string         `json:"total,omitempty"`
+	Currency string         `json:"currency,omitempty"`
 	Details  *AmountDetails `json:"details,omitempty"`
 }
 
@@ -73,8 +72,8 @@ type ItemList struct {
 }
 
 type TransactionFee struct {
-	Value    string `json:"value"`
-	Currency string `json:"currency"`
+	Value    string `json:"value,omitempty"`
+	Currency string `json:"currency,omitempty"`
 }
 
 const (
@@ -86,33 +85,33 @@ const (
 )
 
 type Sale struct {
-	Id                        string          `json:"id"`
-	CreateTime                *time.Time      `json:"create_time"`
-	UpdateTime                *time.Time      `json:"update_time"`
-	Amount                    *Amount         `json:"amount"`
-	PaymentMode               string          `json:"payment_mode"`
-	State                     string          `json:"state"`
-	ProtectionEligibility     string          `json:"protection_eligibility"`
-	ProtectionEligibilityType string          `json:"protection_eligibility_type"`
-	ParentPayment             string          `json:"parent_payment"`
+	Id                        string          `json:"id,omitempty"`
+	CreateTime                string          `json:"create_time,omitempty"`
+	UpdateTime                string          `json:"update_time,omitempty"`
+	Amount                    *Amount         `json:"amount,omitempty"`
+	PaymentMode               string          `json:"payment_mode,omitempty"`
+	State                     string          `json:"state,omitempty"`
+	ProtectionEligibility     string          `json:"protection_eligibility,omitempty"`
+	ProtectionEligibilityType string          `json:"protection_eligibility_type,omitempty"`
+	ParentPayment             string          `json:"parent_payment,omitempty"`
 	TransactionFee            *TransactionFee `json:"transaction_fee,omitempty"`
-	Links                     []*Link         `json:"links,omitempty"`
-	InvoiceNumber             string          `json:"invoice_number"`
-	Custom                    string          `json:"custom"`
-	ReceiptId                 string          `json:"receipt_id"`
-	SoftDescriptor            string          `json:"soft_descriptor"`
+	Links                     []*Link         `json:"links,omitempty,omitempty"`
+	InvoiceNumber             string          `json:"invoice_number,omitempty"`
+	Custom                    string          `json:"custom,omitempty"`
+	ReceiptId                 string          `json:"receipt_id,omitempty"`
+	SoftDescriptor            string          `json:"soft_descriptor,omitempty"`
 }
 
 type Refund struct {
-	Id            string     `json:"id"`
-	CreateTime    *time.Time `json:"create_time"`
-	UpdateTime    *time.Time `json:"update_time"`
-	State         string     `json:"state"`
-	Amount        *Amount    `json:"amount"`
-	SaleId        string     `json:"sale_id"`
-	ParentPayment string     `json:"parent_payment"`
-	InvoiceNumber string     `json:"invoice_number"`
-	Links         []*Link    `json:"links,omitempty"`
+	Id            string  `json:"id"`
+	CreateTime    string  `json:"create_time"`
+	UpdateTime    string  `json:"update_time"`
+	State         string  `json:"state"`
+	Amount        *Amount `json:"amount"`
+	SaleId        string  `json:"sale_id"`
+	ParentPayment string  `json:"parent_payment"`
+	InvoiceNumber string  `json:"invoice_number"`
+	Links         []*Link `json:"links,omitempty"`
 }
 
 type RelatedResources struct {
@@ -170,12 +169,12 @@ type Payment struct {
 	RedirectURLs        *RedirectURLs  `json:"redirect_urls"`
 
 	// 返回结果添加的字段
-	Id            string     `json:"id,omitempty"`
-	CreateTime    *time.Time `json:"create_time,omitempty"`
-	State         string     `json:"state,omitempty"`
-	FailureReason string     `json:"failure_reason,omitempty"`
-	UpdateTime    *time.Time `json:"update_time,omitempty"`
-	Links         []*Link    `json:"links"`
+	Id            string  `json:"id,omitempty"`
+	CreateTime    string  `json:"create_time,omitempty"`
+	State         string  `json:"state,omitempty"`
+	FailureReason string  `json:"failure_reason,omitempty"`
+	UpdateTime    string  `json:"update_time,omitempty"`
+	Links         []*Link `json:"links"`
 }
 
 type PaymentListParam struct {

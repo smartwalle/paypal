@@ -106,6 +106,8 @@ func (this *PayPal) request(method, url string, payload interface{}) (*http.Requ
 			return nil, err
 		}
 		buf = bytes.NewBuffer(b)
+
+		fmt.Println(string(b))
 	}
 	return http.NewRequest(method, url, buf)
 }

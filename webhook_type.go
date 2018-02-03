@@ -2,8 +2,6 @@
 
 package paypal
 
-import "time"
-
 const (
 	K_PAYPAL_EVENT_RESOURCE_TYPE_INVOICES = "invoices"
 	K_PAYPAL_EVENT_RESOURCE_TYPE_SALE     = "sale"
@@ -33,7 +31,7 @@ type WebhookList struct {
 
 type Event struct {
 	Id           string      `json:"id"`
-	CreateTime   *time.Time  `json:"create_time,omitempty"`
+	CreateTime   string      `json:"create_time,omitempty"`
 	ResourceType string      `json:"resource_type,omitempty"`
 	EventVersion string      `json:"event_version,omitempty"`
 	EventType    string      `json:"event_type,omitempty"`
