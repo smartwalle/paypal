@@ -1,10 +1,5 @@
 package paypal
 
-import (
-	"fmt"
-	"net/url"
-)
-
 const (
 	k_PAYMENT_API = "/v1/payments/payment"
 	k_SALE_API    = "/v1/payments/sale"
@@ -39,42 +34,6 @@ func (this *PayPal) ExpressCreatePayment(total, currency, cancelURL, returnURL s
 	return results, err
 }
 
-type PaymentListParam struct {
-	Count      int
-	StartId    string
-	StartIndex int
-	StartTime  string
-	EndTime    string
-	SortBy     string
-	SortOrder  string
-}
-
-func (this *PaymentListParam) QueryString() string {
-	var p = url.Values{}
-	if len(this.StartId) > 0 {
-		p.Set("start_id", this.StartId)
-	}
-	if len(this.StartTime) > 0 {
-		p.Set("start_time", this.StartTime)
-	}
-	if len(this.EndTime) > 0 {
-		p.Set("end_time", this.EndTime)
-	}
-	if this.StartIndex > 0 {
-		p.Set("start_index", fmt.Sprintf("%d", this.StartIndex))
-	}
-	if this.Count > 0 {
-		p.Set("count", fmt.Sprintf("%f", this.Count))
-	}
-	if len(this.SortBy) > 0 {
-		p.Set("sort_by", this.SortBy)
-	}
-	if len(this.SortOrder) > 0 {
-		p.Set("sort_order", this.SortOrder)
-	}
-	return "?" + p.Encode()
-}
-
 // GetPaymentList https://developer.paypal.com/docs/api/payments/#payment_list
 func (this *PayPal) GetPaymentList(param *PaymentListParam) (results *PaymentList, err error) {
 	var api = this.BuildAPI(k_PAYMENT_API) + param.QueryString()
@@ -107,13 +66,6 @@ func (this *PayPal) GetSaleDetails(saleId string) (results *Sale, err error) {
 	return results, err
 }
 
-type refundSaleParam struct {
-	Amount struct {
-		Total    string `json:"total"`
-		Currency string `json:"currency"`
-	} `json:"amount"`
-	InvoiceNumber string `json:"invoice_number"`
-}
 
 // RefundSale https://developer.paypal.com/docs/api/payments/#sale_refund
 func (this *PayPal) RefundSale(saleId, invoiceNumber, total, currency string) (results *Refund, err error) {

@@ -22,10 +22,11 @@ const (
 )
 
 type PayPal struct {
-	clientId  string
-	secret    string
-	apiDomain string
-	Token     *Token
+	clientId     string
+	secret       string
+	apiDomain    string
+	isProduction bool
+	Token        *Token
 }
 
 func New(clientId, secret string, isProduction bool) (client *PayPal) {
@@ -68,12 +69,12 @@ func (this *PayPal) doRequestWithAuth(method, url string, param, result interfac
 	}
 
 	var req *http.Request
-	req, err = request(method, url, param)
+	req, err = this.request(method, url, param)
 	if err != nil {
 		return err
 	}
 	req.Header.Set("Authorization", "Bearer "+this.Token.AccessToken)
-	return doRequest(req, result)
+	return this.doRequest(req, result)
 }
 
 func (this *PayPal) GetAccessToken() (token *Token, err error) {
@@ -86,7 +87,7 @@ func (this *PayPal) GetAccessToken() (token *Token, err error) {
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.SetBasicAuth(this.clientId, this.secret)
 
-	err = doRequest(req, &token)
+	err = this.doRequest(req, &token)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +97,7 @@ func (this *PayPal) GetAccessToken() (token *Token, err error) {
 	return token, err
 }
 
-func request(method, url string, payload interface{}) (*http.Request, error) {
+func (this *PayPal) request(method, url string, payload interface{}) (*http.Request, error) {
 	var buf io.Reader
 	if payload != nil {
 		b, err := json.Marshal(payload)
@@ -108,7 +109,7 @@ func request(method, url string, payload interface{}) (*http.Request, error) {
 	return http.NewRequest(method, url, buf)
 }
 
-func doRequest(req *http.Request, result interface{}) error {
+func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Accept-Language", "en_US")
 
@@ -133,12 +134,22 @@ func doRequest(req *http.Request, result interface{}) error {
 		return err
 	}
 
-	if req.URL.Path != k_GET_ACCESS_TOKEN_API {
-		fmt.Println("=========== Begin ============")
-		fmt.Println(req.Method, rep.StatusCode, req.URL.String())
-		fmt.Println(req.Header)
-		fmt.Println(string(data))
-		fmt.Println("===========  End  ============")
+	if this.isProduction == false {
+		if req.URL.Path != k_GET_ACCESS_TOKEN_API {
+			fmt.Println("=========== Begin ============")
+			fmt.Println("【请求信息】")
+			fmt.Println(req.Method, rep.StatusCode, req.URL.String())
+			for key := range req.Header {
+				fmt.Println(key, "-", req.Header.Get(key))
+			}
+			fmt.Println("")
+			fmt.Println("【返回信息】")
+			for key := range rep.Header {
+				fmt.Println(key, "-", rep.Header.Get(key))
+			}
+			fmt.Println(string(data))
+			fmt.Println("===========  End  ============")
+		}
 	}
 
 	switch rep.StatusCode {

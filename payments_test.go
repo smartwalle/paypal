@@ -13,6 +13,18 @@ func getPayPal() *PayPal {
 	if paypal == nil {
 		paypal = New("AS8XSa9JrOJ3rf0kxVqCgRLIlMpgaKhLTShpYxISysR1VpnN6AMLfrvj-upOMuNkXdb9bTIzsFH4umB5", "ECA3_usif2DUgGxgcBTddOKgg2rbjUT7J3B3-Ud9z9y54AK9mYTDDFyadmMLSo1QOiO2rci99FSq1PbZ", false)
 	}
+
+	//var whList, _ = paypal.GetWebhookList()
+	//for _, wh := range whList.Webhooks {
+	//	paypal.DeleteWebhook(wh.Id)
+	//}
+	//
+	//var wh, err = paypal.CreateWebhook("https://smartwalle.tk/paypal", "PAYMENT.SALE.COMPLETED", "PAYMENT.SALE.DENIED", "PAYMENT.SALE.PENDING", "PAYMENT.SALE.REFUNDED", "PAYMENT.SALE.REVERSED", "INVOICING.INVOICE.CREATED", "INVOICING.INVOICE.PAID", "INVOICING.INVOICE.REFUNDED", "INVOICING.INVOICE.UPDATED")
+	//log4go.Debugln("添加回调：", err)
+	//if wh != nil {
+	//	log4go.Debugln(wh.Id, wh.URL)
+	//}
+
 	return paypal
 }
 
