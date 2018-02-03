@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	var pp = paypal.New("AS8XSa9JrOJ3rf0kxVqCgRLIlMpgaKhLTShpYxISysR1VpnN6AMLfrvj-upOMuNkXdb9bTIzsFH4umB5", "ECA3_usif2DUgGxgcBTddOKgg2rbjUT7J3B3-Ud9z9y54AK9mYTDDFyadmMLSo1QOiO2rci99FSq1PbZ", false)
+	var pp = paypal.New("AWm6HIhK8C8XaGSdPIJ8wb0PAuaXSL9qG5Yq_wlVlZJVGH9SuuAm8goBkoM7ZLWub6VqwKm2PbM_yk8r", "EJhZ1JgU4IbriMMtSayykQoupjfZ-hET1QzOSa8Z0-tbhnwBvt4Dx14ceeDOvxxUmty_YZ-awGS_yZYY", false)
 	http.HandleFunc("/paypal", func(w http.ResponseWriter, req *http.Request) {
-		var event, err = pp.GetWebhookEvent("7WR65199RD094230L", req)
+		var event, err = pp.GetWebhookEvent("6WJ221414R474672F", req)
 		if err != nil {
 			fmt.Println(err)
 			return

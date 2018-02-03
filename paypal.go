@@ -38,6 +38,7 @@ func New(clientId, secret string, isProduction bool) (client *PayPal) {
 	} else {
 		client.apiDomain = k_PAY_PAL_SANDBOX_API_URL
 	}
+	client.isProduction = isProduction
 	return client
 }
 
@@ -140,12 +141,11 @@ func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
 			fmt.Println("【请求信息】")
 			fmt.Println(req.Method, rep.StatusCode, req.URL.String())
 			for key := range req.Header {
-				fmt.Println(key, "-", req.Header.Get(key))
+				fmt.Println(key, ":", req.Header.Get(key))
 			}
-			fmt.Println("")
 			fmt.Println("【返回信息】")
 			for key := range rep.Header {
-				fmt.Println(key, "-", rep.Header.Get(key))
+				fmt.Println(key, ":", rep.Header.Get(key))
 			}
 			fmt.Println(string(data))
 			fmt.Println("===========  End  ============")
