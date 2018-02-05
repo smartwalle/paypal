@@ -33,12 +33,12 @@ func New(clientId, secret string, isProduction bool) (client *PayPal) {
 	client = &PayPal{}
 	client.clientId = clientId
 	client.secret = secret
+	client.isProduction = isProduction
 	if isProduction {
 		client.apiDomain = k_PAY_PAL_PRODUCTION_API_URL
 	} else {
 		client.apiDomain = k_PAY_PAL_SANDBOX_API_URL
 	}
-	client.isProduction = isProduction
 	return client
 }
 
@@ -106,8 +106,6 @@ func (this *PayPal) request(method, url string, payload interface{}) (*http.Requ
 			return nil, err
 		}
 		buf = bytes.NewBuffer(b)
-
-		fmt.Println(string(b))
 	}
 	return http.NewRequest(method, url, buf)
 }

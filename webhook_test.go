@@ -1,22 +1,26 @@
 package paypal
 
-//import (
-//	"testing"
-//	"fmt"
-//)
-//
-//func TestPayPal_CreateWebhook(t *testing.T) {
-//	fmt.Println(getPayPal().CreateWebhook("https://youtube.koopor.com/paypal", []string{"PAYMENT.SALE.COMPLETED"}))
-//}
-//
-//func TestPayPal_GetWebhookList(t *testing.T) {
-//	fmt.Println(getPayPal().GetWebhookList())
-//}
-//
-//func TestPayPal_GetWebhookDetails(t *testing.T) {
-//	fmt.Println(getPayPal().GetWebhookDetails("0KV10204H7400571Y"))
-//}
-//
-//func TestPayPal_DeleteWebhook(t *testing.T) {
-//	fmt.Println(getPayPal().DeleteWebhook("98A21954GJ2233458"))
-//}
+import (
+	"testing"
+	"fmt"
+)
+
+func TestPayPal_CreateWebhook(t *testing.T) {
+	//var webhook, err = paypal.CreateWebhook("https://smartwalle.tk/paypal", "PAYMENT.SALE.COMPLETED")
+	//if err != nil {
+	//	t.Fatal(err)
+	//}
+	//if webhook != nil {
+	//	fmt.Println("CreateWebhook", webhook.Id, webhook.URL)
+	//}
+}
+
+func TestPayPal_GetWebhookList(t *testing.T) {
+	var webhookList, err = paypal.GetWebhookList()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, webhook := range webhookList.Webhooks {
+		fmt.Println(webhook.Id, webhook.URL)
+	}
+}

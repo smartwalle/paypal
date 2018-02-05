@@ -1,5 +1,3 @@
-// https://developer.paypal.com/docs/api/payments/#definitions
-
 package paypal
 
 import (
@@ -48,7 +46,7 @@ type PaymentOptions struct {
 type Item struct {
 	Name        string      `json:"name"`
 	Description string      `json:"description"`
-	Quantity    interface{} `json:"quantity"`
+	Quantity    interface{} `json:"quantity"` // string or int
 	Price       string      `json:"price"`
 	Tax         string      `json:"tax"`
 	SKU         string      `json:"sku"`
@@ -128,7 +126,6 @@ type Transaction struct {
 	ItemList       *ItemList       `json:"item_list,omitempty"`
 
 	// 返回结果添加的字段
-
 	RelatedResources []*RelatedResources `json:"related_resources,omitempty"`
 }
 
@@ -174,7 +171,7 @@ type Payment struct {
 	State         string  `json:"state,omitempty"`
 	FailureReason string  `json:"failure_reason,omitempty"`
 	UpdateTime    string  `json:"update_time,omitempty"`
-	Links         []*Link `json:"links"`
+	Links         []*Link `json:"links,omitempty"`
 }
 
 type PaymentListParam struct {

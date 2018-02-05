@@ -1,5 +1,3 @@
-// https://developer.paypal.com/docs/integration/direct/webhooks/event-names/
-
 package paypal
 
 const (
@@ -7,6 +5,7 @@ const (
 	K_PAYPAL_EVENT_RESOURCE_TYPE_SALE     = "sale"
 )
 
+// https://developer.paypal.com/docs/integration/direct/webhooks/event-names/
 const (
 	K_PAYPAL_EVENT_TYPE_PAYMENT_SALE_COMPLETED = "PAYMENT.SALE.COMPLETED"
 	K_PAYPAL_EVENT_TYPE_PAYMENT_SALE_REFUNDED  = "PAYMENT.SALE.REFUNDED"

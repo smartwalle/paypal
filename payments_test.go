@@ -2,31 +2,21 @@ package paypal
 
 import (
 	//"fmt"
-	"testing"
-	"github.com/smartwalle/go-uuid/uuid"
 	"fmt"
+	"github.com/smartwalle/go-uuid/uuid"
+	"testing"
 )
 
-var paypal *PayPal
-
-func getPayPal() *PayPal {
-	if paypal == nil {
-		paypal = New("AS8XSa9JrOJ3rf0kxVqCgRLIlMpgaKhLTShpYxISysR1VpnN6AMLfrvj-upOMuNkXdb9bTIzsFH4umB5", "ECA3_usif2DUgGxgcBTddOKgg2rbjUT7J3B3-Ud9z9y54AK9mYTDDFyadmMLSo1QOiO2rci99FSq1PbZ", false)
-	}
-
-	//var whList, _ = paypal.GetWebhookList()
-	//for _, wh := range whList.Webhooks {
-	//	paypal.DeleteWebhook(wh.Id)
-	//}
-	//
-	//var wh, err = paypal.CreateWebhook("https://smartwalle.tk/paypal", "PAYMENT.SALE.COMPLETED", "PAYMENT.SALE.DENIED", "PAYMENT.SALE.PENDING", "PAYMENT.SALE.REFUNDED", "PAYMENT.SALE.REVERSED", "INVOICING.INVOICE.CREATED", "INVOICING.INVOICE.PAID", "INVOICING.INVOICE.REFUNDED", "INVOICING.INVOICE.UPDATED")
-	//log4go.Debugln("添加回调：", err)
-	//if wh != nil {
-	//	log4go.Debugln(wh.Id, wh.URL)
-	//}
-
-	return paypal
-}
+//var whList, _ = paypal.GetWebhookList()
+//for _, wh := range whList.Webhooks {
+//	paypal.DeleteWebhook(wh.Id)
+//}
+//
+//var wh, err = paypal.CreateWebhook("https://smartwalle.tk/paypal", "PAYMENT.SALE.COMPLETED", "PAYMENT.SALE.DENIED", "PAYMENT.SALE.PENDING", "PAYMENT.SALE.REFUNDED", "PAYMENT.SALE.REVERSED", "INVOICING.INVOICE.CREATED", "INVOICING.INVOICE.PAID", "INVOICING.INVOICE.REFUNDED", "INVOICING.INVOICE.UPDATED")
+//log4go.Debugln("添加回调：", err)
+//if wh != nil {
+//	log4go.Debugln(wh.Id, wh.URL)
+//}
 
 //func TestPayPal_ExpressCreatePayment(t *testing.T) {
 //	fmt.Println(getPayPal().ExpressCreatePayment("10", "USD", "http://www.baidu.com", "http://192.168.192.250:3000/paypal"))
@@ -95,8 +85,14 @@ func TestPayPal_CreatePayment(t *testing.T) {
 
 	p.NoteToPayer = "Contact us for any questions on your order."
 
-	var payment, err = getPayPal().CreatePayment(p)
-	fmt.Println(payment, err)
+	var payment, err = paypal.CreatePayment(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if payment != nil {
+		fmt.Println("CreatePayment", payment.Id)
+	}
 }
 
 //func TestPayPal_GetPaymentList(t *testing.T) {

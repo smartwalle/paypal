@@ -2,10 +2,10 @@ package paypal
 
 import (
 	"encoding/json"
-	"io/ioutil"
-	"net/http"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 )
 
 const (

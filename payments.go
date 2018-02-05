@@ -66,7 +66,6 @@ func (this *PayPal) GetSaleDetails(saleId string) (results *Sale, err error) {
 	return results, err
 }
 
-
 // RefundSale https://developer.paypal.com/docs/api/payments/#sale_refund
 func (this *PayPal) RefundSale(saleId, invoiceNumber, total, currency string) (results *Refund, err error) {
 	var p = &refundSaleParam{}
