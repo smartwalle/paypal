@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	k_WEBHOOK_API                   = "/v1/notifications/webhooks"
-	k_VERITY_WEBHOOK_SIGNATURE_APPI = "/v1/notifications/verify-webhook-signature"
+	k_WEBHOOK_API                  = "/v1/notifications/webhooks"
+	k_VERITY_WEBHOOK_SIGNATURE_API = "/v1/notifications/verify-webhook-signature"
 )
 
 // CreateWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_create
@@ -54,7 +54,7 @@ func (this *PayPal) DeleteWebhook(webhookId string) (results *Webhook, err error
 
 // verifyWebhookSignature https://developer.paypal.com/docs/api/webhooks/#verify-webhook-signature_post
 func (this *PayPal) verifyWebhookSignature(param *verifyWebhookSignatureParam) (results *verifyWebhookSignatureResponse, err error) {
-	var api = this.BuildAPI(k_VERITY_WEBHOOK_SIGNATURE_APPI)
+	var api = this.BuildAPI(k_VERITY_WEBHOOK_SIGNATURE_API)
 	err = this.doRequestWithAuth("POST", api, param, &results)
 	return results, err
 }
@@ -66,9 +66,6 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 	if err != nil || len(body) == 0 {
 		return nil, err
 	}
-
-	fmt.Println("=============")
-	fmt.Println(string(body))
 
 	if err = json.Unmarshal(body, &event); err != nil {
 		return nil, err
