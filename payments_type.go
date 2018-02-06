@@ -174,12 +174,12 @@ type Payment struct {
 	RedirectURLs        *RedirectURLs  `json:"redirect_urls"`
 
 	// 返回结果添加的字段
-	Id            string  `json:"id,omitempty"`
-	CreateTime    string  `json:"create_time,omitempty"`
-	State         string  `json:"state,omitempty"`
-	FailureReason string  `json:"failure_reason,omitempty"`
-	UpdateTime    string  `json:"update_time,omitempty"`
-	Links         []*Link `json:"links,omitempty"`
+	Id            string       `json:"id,omitempty"`
+	CreateTime    string       `json:"create_time,omitempty"`
+	State         PaymentState `json:"state,omitempty"`
+	FailureReason string       `json:"failure_reason,omitempty"`
+	UpdateTime    string       `json:"update_time,omitempty"`
+	Links         []*Link      `json:"links,omitempty"`
 }
 
 type PaymentListParam struct {
