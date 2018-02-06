@@ -76,6 +76,10 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 		return nil, err
 	}
 
+	if event == nil || (event != nil && (event.Id == "" || event.EventType == "")) {
+		return nil, errors.New("unknown webhook event")
+	}
+
 	switch event.ResourceType {
 	case K_EVENT_RESOURCE_TYPE_SALE:
 		var sale *Sale
@@ -101,10 +105,6 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 			return nil, err
 		}
 		event.Resource = data
-	}
-
-	if event == nil || (event != nil && (event.Id == "" || event.EventType == "")) {
-		return nil, errors.New("unknown webhook event")
 	}
 
 	var verifyParam = &verifyWebhookSignatureParam{}
