@@ -14,7 +14,15 @@ func main() {
 			fmt.Println(err)
 			return
 		}
-		fmt.Println(event.Id, event.ResourceType)
+
+		if event == nil {
+			return
+		}
+		switch event.EventType {
+		case paypal.K_EVENT_TYPE_PAYMENT_SALE_COMPLETED:
+			var sale = event.Sale()
+			fmt.Println("支付成功", event.Id, event.ResourceType, event.EventType, sale.State, sale.ParentPayment, sale.InvoiceNumber)
+		}
 	})
 
 	http.ListenAndServe(":6565", nil)
