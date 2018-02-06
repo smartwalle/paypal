@@ -177,9 +177,10 @@ type RedirectURLs struct {
 }
 
 type Link struct {
-	Href   string `json:"href"`
-	Rel    string `json:"rel"`
-	Method string `json:"method"`
+	Href    string `json:"href,omitempty"`
+	Rel     string `json:"rel,omitempty"`
+	Method  string `json:"method,omitempty"`
+	EncType string `json:"encType,omitempty"`
 }
 
 type PaymentIntent string

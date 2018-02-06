@@ -38,7 +38,7 @@ func (this *PayPal) GetWebhookList() (results *WebhookList, err error) {
 	return results, err
 }
 
-// GetWebhookDetails https://developer.paypal.com/docs/api/webhooks/#webhooks_get
+// GetWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_get
 func (this *PayPal) GetWebhookDetails(webhookId string) (results *Webhook, err error) {
 	var api = this.BuildAPI(k_WEBHOOK_API, webhookId)
 	err = this.doRequestWithAuth("GET", api, nil, &results)
@@ -46,10 +46,10 @@ func (this *PayPal) GetWebhookDetails(webhookId string) (results *Webhook, err e
 }
 
 // DeleteWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_delete
-func (this *PayPal) DeleteWebhook(webhookId string) (results *Webhook, err error) {
+func (this *PayPal) DeleteWebhook(webhookId string) (err error) {
 	var api = this.BuildAPI(k_WEBHOOK_API, webhookId)
-	err = this.doRequestWithAuth("DELETE", api, nil, &results)
-	return results, err
+	err = this.doRequestWithAuth("DELETE", api, nil, nil)
+	return err
 }
 
 // verifyWebhookSignature https://developer.paypal.com/docs/api/webhooks/#verify-webhook-signature_post
@@ -67,8 +67,38 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 		return nil, err
 	}
 
+	var rawResource json.RawMessage
+	event = &Event{
+		Resource: &rawResource,
+	}
+
 	if err = json.Unmarshal(body, &event); err != nil {
 		return nil, err
+	}
+
+	switch event.ResourceType {
+	case K_EVENT_RESOURCE_TYPE_SALE:
+		var sale *Sale
+		if err = json.Unmarshal(rawResource, &sale); err != nil {
+			return nil, err
+		}
+		event.Resource = sale
+
+		fmt.Println("Sale", event.Sale().Id, event.Sale().InvoiceNumber, event.Sale().State)
+	case K_EVENT_RESOURCE_TYPE_INVOICES:
+		var invoice *Invoice
+		if err = json.Unmarshal(rawResource, &invoice); err != nil {
+			return nil, err
+		}
+		event.Resource = invoice
+
+		fmt.Println("Invoice", event.Invoice().Id, event.Invoice().Status)
+	default:
+		var data map[string]interface{}
+		if err = json.Unmarshal(rawResource, &data); err != nil {
+			return nil, err
+		}
+		event.Resource = data
 	}
 
 	if event == nil {
@@ -82,7 +112,7 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 	verifyParam.TransmissionSig = req.Header.Get("Paypal-Transmission-Sig")
 	verifyParam.TransmissionTime = req.Header.Get("Paypal-Transmission-Time")
 	verifyParam.WebhookId = webhookId
-	verifyParam.WebhookEvent = event
+	verifyParam.WebhookEvent = jsonString(string(body))
 
 	verifyResp, err := this.verifyWebhookSignature(verifyParam)
 	if err != nil {
@@ -92,5 +122,6 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 	if verifyResp.VerificationStatus != "SUCCESS" {
 		return nil, errors.New(fmt.Sprintf("verify webhook %s", verifyResp.VerificationStatus))
 	}
+
 	return event, nil
 }

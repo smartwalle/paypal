@@ -2,7 +2,6 @@ package paypal
 
 import (
 	"testing"
-	"fmt"
 )
 
 func TestPayPal_CreateWebhook(t *testing.T) {
@@ -16,11 +15,11 @@ func TestPayPal_CreateWebhook(t *testing.T) {
 }
 
 func TestPayPal_GetWebhookList(t *testing.T) {
-	var webhookList, err = paypal.GetWebhookList()
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, webhook := range webhookList.Webhooks {
-		fmt.Println(webhook.Id, webhook.URL)
-	}
+	//var webhookList, err = paypal.GetWebhookList()
+	//if err != nil {
+	//	t.Fatal(err)
+	//}
+	//for _, webhook := range webhookList.Webhooks {
+	//	fmt.Println(webhook.Id, webhook.URL)
+	//}
 }

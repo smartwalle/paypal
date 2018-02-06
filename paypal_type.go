@@ -11,3 +11,9 @@ type Token struct {
 	ExpiresIn   int       `json:"expires_in"`
 	ExpiresAt   time.Time `json:"expires_at"`
 }
+
+type jsonString string
+
+func (this jsonString) MarshalJSON() ([]byte, error) {
+	return []byte(string(this)), nil
+}

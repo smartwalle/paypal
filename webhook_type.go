@@ -42,14 +42,28 @@ type Event struct {
 	Links        []*Link      `json:"links,omitempty"`
 }
 
+func (this *Event) Sale() *Sale {
+	if s, ok := this.Resource.(*Sale); ok {
+		return s
+	}
+	return nil
+}
+
+func (this *Event) Invoice() *Invoice {
+	if s, ok := this.Resource.(*Invoice); ok {
+		return s
+	}
+	return nil
+}
+
 type verifyWebhookSignatureParam struct {
-	AuthAlgo         string `json:"auth_algo"`
-	CertURL          string `json:"cert_url"`
-	TransmissionId   string `json:"transmission_id"`
-	TransmissionSig  string `json:"transmission_sig"`
-	TransmissionTime string `json:"transmission_time"`
-	WebhookId        string `json:"webhook_id"`
-	WebhookEvent     *Event `json:"webhook_event"`
+	AuthAlgo         string      `json:"auth_algo"`
+	CertURL          string      `json:"cert_url"`
+	TransmissionId   string      `json:"transmission_id"`
+	TransmissionSig  string      `json:"transmission_sig"`
+	TransmissionTime string      `json:"transmission_time"`
+	WebhookId        string      `json:"webhook_id"`
+	WebhookEvent     interface{} `json:"webhook_event"`
 }
 
 type verifyWebhookSignatureResponse struct {
