@@ -1,8 +1,8 @@
 package paypal
 
 type WebProfiles struct {
-	Id           string                   `json:"id"`
-	Name         string                   `json:"name"`
+	Id           string                   `json:"id,omitempty"`
+	Name         string                   `json:"name,omitempty"`
 	Presentation *WebProfilesPresentation `json:"presentation,omitempty"`
 	InputFields  *WebProfilesInputFields  `json:"input_fields,omitempty"`
 	FlowConfig   *WebProfilesFlowConfig   `json:"flow_config,omitempty"`
@@ -15,11 +15,11 @@ type WebProfilesPresentation struct {
 }
 
 type WebProfilesInputFields struct {
-	NoShipping      int `json:"no_shipping"`
-	AddressOverride int `json:"address_override"`
+	NoShipping      int `json:"no_shipping,omitempty"`
+	AddressOverride int `json:"address_override,omitempty"`
 }
 
 type WebProfilesFlowConfig struct {
-	LandingPageType   string `json:"landing_page_type"`
-	BankTxnPendingURL string `json:"bank_txn_pending_url"`
+	LandingPageType   string `json:"landing_page_type,omitempty"`
+	BankTxnPendingURL string `json:"bank_txn_pending_url,omitempty"`
 }
