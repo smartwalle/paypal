@@ -132,20 +132,31 @@ type ProcessorResponse struct {
 	Vpas         string `json:"vpas,omitempty"`
 }
 
-type Refund struct {
-	Id            string  `json:"id"`
-	CreateTime    string  `json:"create_time"`
-	UpdateTime    string  `json:"update_time"`
-	State         string  `json:"state"`
-	Amount        *Amount `json:"amount"`
-	SaleId        string  `json:"sale_id"`
-	ParentPayment string  `json:"parent_payment"`
-	InvoiceNumber string  `json:"invoice_number"`
-	Links         []*Link `json:"links,omitempty"`
-}
+type RefundState string
 
-type RelatedResources struct {
-	Sale *Sale `json:"sale,omitempty"`
+const (
+	K_REFUND_STATE_PENDING   RefundState = "pending"
+	K_REFUND_STATE_COMPLETED RefundState = "completed"
+	K_REFUND_STATE_CANCELLED RefundState = "cancelled"
+	K_REFUND_STATE_FAILED    RefundState = "failed"
+)
+
+type Refund struct {
+	Id               string      `json:"id,omitempty"`
+	Amount           *Amount     `json:"amount,omitempty"`
+	State            RefundState `json:"state,omitempty"`
+	Reason           string      `json:"reason,omitempty"`
+	RefundReasonCode string      `json:"refund_reason_code,omitempty"`
+	InvoiceNumber    string      `json:"invoice_number,omitempty"`
+	SaleId           string      `json:"sale_id,omitempty"`
+	CaptureId        string      `json:"capture_id,omitempty"`
+	ParentPayment    string      `json:"parent_payment,omitempty"`
+	Description      string      `json:"description,omitempty"`
+	CreateTime       string      `json:"create_time,omitempty"`
+	UpdateTime       string      `json:"update_time,omitempty"`
+	Custom           string      `json:"custom,omitempty"`
+	RefundToPayer    *Currency   `json:"refund_to_payer,omitempty"`
+	Links            []*Link     `json:"links,omitempty,omitempty"`
 }
 
 type Transaction struct {
@@ -174,13 +185,6 @@ type Payee struct {
 type RedirectURLs struct {
 	ReturnURL string `json:"return_url"`
 	CancelURL string `json:"cancel_url"`
-}
-
-type Link struct {
-	Href    string `json:"href,omitempty"`
-	Rel     string `json:"rel,omitempty"`
-	Method  string `json:"method,omitempty"`
-	EncType string `json:"encType,omitempty"`
 }
 
 type PaymentIntent string

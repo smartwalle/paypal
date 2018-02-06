@@ -5,6 +5,7 @@ type ResourceType string
 const (
 	K_EVENT_RESOURCE_TYPE_INVOICES ResourceType = "invoices"
 	K_EVENT_RESOURCE_TYPE_SALE     ResourceType = "sale"
+	K_EVENT_RESOURCE_TYPE_REFUND   ResourceType = "refund"
 )
 
 // https://developer.paypal.com/docs/integration/direct/webhooks/event-names/

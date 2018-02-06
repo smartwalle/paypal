@@ -67,9 +67,9 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 		return nil, err
 	}
 
-	var rawResource json.RawMessage
+	var rawRes json.RawMessage
 	event = &Event{
-		Resource: &rawResource,
+		Resource: &rawRes,
 	}
 
 	if err = json.Unmarshal(body, &event); err != nil {
@@ -79,30 +79,32 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 	switch event.ResourceType {
 	case K_EVENT_RESOURCE_TYPE_SALE:
 		var sale *Sale
-		if err = json.Unmarshal(rawResource, &sale); err != nil {
+		if err = json.Unmarshal(rawRes, &sale); err != nil {
 			return nil, err
 		}
 		event.Resource = sale
-
-		fmt.Println("Sale", event.Sale().Id, event.Sale().InvoiceNumber, event.Sale().State)
+	case K_EVENT_RESOURCE_TYPE_REFUND:
+		var refund *Refund
+		if err = json.Unmarshal(rawRes, &refund); err != nil {
+			return nil, err
+		}
+		event.Resource = refund
 	case K_EVENT_RESOURCE_TYPE_INVOICES:
 		var invoice *Invoice
-		if err = json.Unmarshal(rawResource, &invoice); err != nil {
+		if err = json.Unmarshal(rawRes, &invoice); err != nil {
 			return nil, err
 		}
 		event.Resource = invoice
-
-		fmt.Println("Invoice", event.Invoice().Id, event.Invoice().Status)
 	default:
 		var data map[string]interface{}
-		if err = json.Unmarshal(rawResource, &data); err != nil {
+		if err = json.Unmarshal(rawRes, &data); err != nil {
 			return nil, err
 		}
 		event.Resource = data
 	}
 
-	if event == nil {
-		return nil, errors.New("webhook event is nil")
+	if event == nil || (event != nil && (event.Id == "" || event.EventType == "")) {
+		return nil, errors.New("unknown webhook event")
 	}
 
 	var verifyParam = &verifyWebhookSignatureParam{}

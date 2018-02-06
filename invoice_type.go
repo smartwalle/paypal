@@ -122,11 +122,6 @@ type Tax struct {
 	Amount  *Currency `json:"amount,omitempty"`
 }
 
-type Currency struct {
-	Currency string `json:"currency,omitempty"`
-	Value    string `json:"value,omitempty"`
-}
-
 type Metadata struct {
 	CreatedDate     string `json:"created_date,omitempty"`
 	CreatedBy       string `json:"created_by,omitempty"`
