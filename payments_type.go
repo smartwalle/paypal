@@ -28,11 +28,12 @@ type Payer struct {
 
 type AmountDetails struct {
 	Subtotal         string `json:"subtotal,omitempty"`
-	Tax              string `json:"tax,omitempty"`
 	Shipping         string `json:"shipping,omitempty"`
+	Tax              string `json:"tax,omitempty"`
 	HandlingFee      string `json:"handling_fee,omitempty"`
 	ShippingDiscount string `json:"shipping_discount,omitempty"`
 	Insurance        string `json:"insurance,omitempty"`
+	GiftWrap         string `json:"gift_wrap,omitempty"`
 }
 
 type Amount struct {
@@ -71,11 +72,6 @@ type ItemList struct {
 	ShippingAddress *ShippingAddress `json:"shipping_address,omitempty"`
 }
 
-type TransactionFee struct {
-	Value    string `json:"value,omitempty"`
-	Currency string `json:"currency,omitempty"`
-}
-
 type SaleState string
 
 const (
@@ -87,21 +83,51 @@ const (
 )
 
 type Sale struct {
-	Id                        string          `json:"id,omitempty"`
-	CreateTime                string          `json:"create_time,omitempty"`
-	UpdateTime                string          `json:"update_time,omitempty"`
-	Amount                    *Amount         `json:"amount,omitempty"`
-	PaymentMode               string          `json:"payment_mode,omitempty"`
-	State                     SaleState       `json:"state,omitempty"`
-	ProtectionEligibility     string          `json:"protection_eligibility,omitempty"`
-	ProtectionEligibilityType string          `json:"protection_eligibility_type,omitempty"`
-	ParentPayment             string          `json:"parent_payment,omitempty"`
-	TransactionFee            *TransactionFee `json:"transaction_fee,omitempty"`
-	Links                     []*Link         `json:"links,omitempty,omitempty"`
-	InvoiceNumber             string          `json:"invoice_number,omitempty"`
-	Custom                    string          `json:"custom,omitempty"`
-	ReceiptId                 string          `json:"receipt_id,omitempty"`
-	SoftDescriptor            string          `json:"soft_descriptor,omitempty"`
+	Id                        string              `json:"id,omitempty"`
+	PurchaseUnitReferenceId   string              `json:"purchase_unit_reference_id,omitempty"`
+	Amount                    *Amount             `json:"amount,omitempty"`
+	PaymentMode               string              `json:"payment_mode,omitempty"`
+	State                     SaleState           `json:"state,omitempty"`
+	ReasonCode                string              `json:"reason_code,omitempty"`
+	ProtectionEligibility     string              `json:"protection_eligibility,omitempty"`
+	ProtectionEligibilityType string              `json:"protection_eligibility_type,omitempty"`
+	ClearingTime              string              `json:"clearing_time,omitempty"`
+	PaymentHoldStatus         string              `json:"payment_hold_status,omitempty"`
+	PaymentHoldReasons        []PaymentHoldReason `json:"payment_hold_reasons,omitempty"`
+	TransactionFee            *Currency           `json:"transaction_fee,omitempty"`
+	ReceivableAmount          *Currency           `json:"receivable_amount,omitempty"`
+	ExchangeRate              string              `json:"exchange_rate,omitempty"`
+	FMFDetails                *FMFDetails         `json:"fmf_details,omitempty"`
+	ReceiptId                 string              `json:"receipt_id,omitempty"`
+	ParentPayment             string              `json:"parent_payment,omitempty"`
+	ProcessorResponse         *ProcessorResponse  `json:"processor_response,omitempty"`
+	BillingAgreementId        string              `json:"billing_agreement_id,omitempty"`
+	CreateTime                string              `json:"create_time,omitempty"`
+	UpdateTime                string              `json:"update_time,omitempty"`
+	Links                     []*Link             `json:"links,omitempty,omitempty"`
+	InvoiceNumber             string              `json:"invoice_number,omitempty"`
+	Custom                    string              `json:"custom,omitempty"`
+	SoftDescriptor            string              `json:"soft_descriptor,omitempty"`
+}
+
+type PaymentHoldReason struct {
+	PaymentHoldReason string `json:"payment_hold_reason,omitempty"`
+}
+
+type FMFDetails struct {
+	FilterType  string `json:"filter_type,omitempty"`
+	FilterId    string `json:"filter_id,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
+}
+
+type ProcessorResponse struct {
+	ResponseCode string `json:"response_code,omitempty"`
+	AVSCode      string `json:"avs_code,omitempty"`
+	CVVCode      string `json:"cvv_code,omitempty"`
+	AdviceCode   string `json:"advice_code,omitempty"`
+	ECISubmitted string `json:"eci_submitted,omitempty"`
+	Vpas         string `json:"vpas,omitempty"`
 }
 
 type Refund struct {
