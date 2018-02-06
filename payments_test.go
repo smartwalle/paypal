@@ -24,7 +24,7 @@ import (
 //
 func TestPayPal_CreatePayment(t *testing.T) {
 	var p = &Payment{}
-	p.Intent = K_PAYPAL_PAYMENT_INTENT_SALE
+	p.Intent = K_PAYMENT_INTENT_SALE
 	p.Payer = &Payer{}
 	p.Payer.PaymentMethod = "paypal"
 	p.RedirectURLs = &RedirectURLs{}

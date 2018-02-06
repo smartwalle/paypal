@@ -13,15 +13,17 @@ type PayerInfo struct {
 	ShippingAddress *ShippingAddress `json:"shipping_address,omitempty"`
 }
 
+type PaymentMethod string
+
 const (
-	K_PAYPAL_PAYMENT_PAYER_METHOD_PAYPAL      = "paypal"
-	K_PAYPAL_PAYMENT_PAYER_METHOD_CREDIT_CARD = "credit_card"
+	K_PAYMENT_METHOD_PAYPAL      PaymentMethod = "paypal"
+	K_PAYMENT_METHOD_CREDIT_CARD PaymentMethod = "credit_card"
 )
 
 type Payer struct {
-	PaymentMethod string     `json:"payment_method"`
-	Status        string     `json:"status,omitempty"`
-	PayerInfo     *PayerInfo `json:"payer_info,omitempty"`
+	PaymentMethod PaymentMethod `json:"payment_method"`
+	Status        string        `json:"status,omitempty"`
+	PayerInfo     *PayerInfo    `json:"payer_info,omitempty"`
 }
 
 type AmountDetails struct {
@@ -74,12 +76,14 @@ type TransactionFee struct {
 	Currency string `json:"currency,omitempty"`
 }
 
+type SaleState string
+
 const (
-	K_PAYPAL_SALE_STATUS_COMPLETED          = "completed"
-	K_PAYPAL_SALE_STATUS_PARTIALLY_REFUNDED = "partially_refunded"
-	K_PAYPAL_SALE_STATUS_PENDING            = "pending"
-	K_PAYPAL_SALE_STATUS_REFUNDED           = "refunded"
-	K_PAYPAL_SALE_STATUS_DENIED             = "denied"
+	K_SALE_STATE_COMPLETED          SaleState = "completed"
+	K_SALE_STATE_PARTIALLY_REFUNDED SaleState = "partially_refunded"
+	K_SALE_STATE_PENDING            SaleState = "pending"
+	K_SALE_STATE_REFUNDED           SaleState = "refunded"
+	K_SALE_STATE_DENIED             SaleState = "denied"
 )
 
 type Sale struct {
@@ -88,7 +92,7 @@ type Sale struct {
 	UpdateTime                string          `json:"update_time,omitempty"`
 	Amount                    *Amount         `json:"amount,omitempty"`
 	PaymentMode               string          `json:"payment_mode,omitempty"`
-	State                     string          `json:"state,omitempty"`
+	State                     SaleState       `json:"state,omitempty"`
 	ProtectionEligibility     string          `json:"protection_eligibility,omitempty"`
 	ProtectionEligibilityType string          `json:"protection_eligibility_type,omitempty"`
 	ParentPayment             string          `json:"parent_payment,omitempty"`
@@ -145,20 +149,24 @@ type Link struct {
 	Method string `json:"method"`
 }
 
-const (
-	K_PAYPAL_PAYMENT_INTENT_SALE      = "sale"
-	K_PAYPAL_PAYMENT_INTENT_AUTHORIZE = "authorize"
-	K_PAYPAL_PAYMENT_INTENT_ORDER     = "order"
-)
+type PaymentIntent string
 
 const (
-	K_PAYPAL_PAYMENT_STATUS_CREATED  = "created"
-	K_PAYPAL_PAYMENT_STATUS_APPROVED = "approved"
-	K_PAYPAL_PAYMENT_STATUS_FAILED   = "failed"
+	K_PAYMENT_INTENT_SALE      PaymentIntent = "sale"
+	K_PAYMENT_INTENT_AUTHORIZE PaymentIntent = "authorize"
+	K_PAYMENT_INTENT_ORDER     PaymentIntent = "order"
+)
+
+type PaymentState string
+
+const (
+	K_PAYMENT_STATE_CREATED  PaymentState = "created"
+	K_PAYMENT_STATE_APPROVED PaymentState = "approved"
+	K_PAYMENT_STATE_FAILED   PaymentState = "failed"
 )
 
 type Payment struct {
-	Intent              string         `json:"intent"`
+	Intent              PaymentIntent  `json:"intent"`
 	ExperienceProfileId string         `json:"experience_profile_id,omitempty"`
 	Payer               *Payer         `json:"payer"`
 	Transactions        []*Transaction `json:"transactions"`
