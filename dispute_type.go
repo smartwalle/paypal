@@ -79,7 +79,7 @@ type DisputeListParam struct {
 	DisputedTransactionId string
 	PageSize              int
 	NextPageToken         string
-	TotalRequired         bool
+	//TotalRequired         bool
 	DisputeState          string
 }
 
@@ -97,7 +97,7 @@ func (this *DisputeListParam) QueryString() string {
 	if len(this.NextPageToken) > 0 {
 		p.Set("next_page_token", this.NextPageToken)
 	}
-	p.Set("total_required", fmt.Sprintf("%t", this.TotalRequired))
+	//p.Set("total_required", fmt.Sprintf("%t", this.TotalRequired))
 	if len(this.DisputeState) > 0 {
 		p.Set("dispute_state", this.DisputeState)
 	}
