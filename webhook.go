@@ -99,6 +99,12 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 			return nil, err
 		}
 		event.Resource = invoice
+	case K_EVENT_RESOURCE_TYPE_DISPUTE:
+		var dispute *Dispute
+		if err = json.Unmarshal(rawRes, &dispute); err != nil {
+			return nil, err
+		}
+		event.Resource = dispute
 	default:
 		var data map[string]interface{}
 		if err = json.Unmarshal(rawRes, &data); err != nil {
