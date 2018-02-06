@@ -93,7 +93,7 @@ var token, err = client.GetAccessToken() // 获取 Access Token
 ##### 1. 快速创建账单
 
 ```Golang
-var payment, err = ExpressCreatePayment(total, currency, cancelURL, returnURL)
+var payment, err = client.ExpressCreatePayment(total, currency, cancelURL, returnURL)
 ...
 ```
 
@@ -162,7 +162,7 @@ i2.Currency = "USD"
 
 p.NoteToPayer = "Contact us for any questions on your order."
 
-var payment, err = getPayPal().CreatePayment(p)
+var payment, err = client.CreatePayment(p)
 fmt.Println(payment, err)
 
 ```
@@ -199,7 +199,9 @@ var payment, err = client.ExecuteApprovedPayment(paymentId, payerID)
 
 ```
 
-如果返回的 payment 的 State 为 “approved”，则表示核准账单支付成功。
+如果返回的 payment 的 State 为 “approved”，则表示核准账单支付成功（注意：不能以此来判断是否支付成功，即实际到账）。
+
+**如果要判断是否实际到账，需要判断返回结果中的 transactions[xx].related_resources[xx].sale.state 的值，当该字段的值为 completed 的时候，才能说明已到账。**
 
 到此，可以算是完成了一个完整的收款流程，如果想要更加严谨，还需要加上 webhook。
 
