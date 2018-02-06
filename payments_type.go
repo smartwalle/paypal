@@ -68,8 +68,10 @@ type ShippingAddress struct {
 }
 
 type ItemList struct {
-	Items           []*Item          `json:"items,omitempty"`
-	ShippingAddress *ShippingAddress `json:"shipping_address,omitempty"`
+	Items               []*Item          `json:"items,omitempty"`
+	ShippingAddress     *ShippingAddress `json:"shipping_address,omitempty"`
+	ShippingMethod      string           `json:"shipping_method,omitempty"`
+	ShippingPhoneNumber string           `json:"shipping_phone_number,omitempty"`
 }
 
 type SaleState string
@@ -147,14 +149,19 @@ type RelatedResources struct {
 }
 
 type Transaction struct {
-	Amount         *Amount         `json:"amount"`
+	ReferenceId    string          `json:"reference_id,omitempty"`
+	Amount         *Amount         `json:"amount,omitempty"`
+	Payee          *Payee          `json:"payee,omitempty"`
 	Description    string          `json:"description,omitempty"`
+	NoteToPayee    string          `json:"note_to_payee,omitempty"`
 	Custom         string          `json:"custom,omitempty"`
 	InvoiceNumber  string          `json:"invoice_number,omitempty"`
-	PaymentOptions *PaymentOptions `json:"payment_options,omitempty"`
+	PurchaseOrder  string          `json:"purchase_order,omitempty"`
 	SoftDescriptor string          `json:"soft_descriptor,omitempty"`
+	PaymentOptions *PaymentOptions `json:"payment_options,omitempty"`
 	ItemList       *ItemList       `json:"item_list,omitempty"`
-
+	NotifyURL      string          `json:"notify_url,omitempty"`
+	OrderURL       string          `json:"order_url,omitempty"`
 	// 返回结果添加的字段
 	RelatedResources []*RelatedResources `json:"related_resources,omitempty"`
 }
