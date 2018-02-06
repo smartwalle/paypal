@@ -1,5 +1,10 @@
 package paypal
 
+import (
+	"fmt"
+	"net/url"
+)
+
 type DisputeStatus string
 
 const (
@@ -67,4 +72,41 @@ type DisputedTransactionItem struct {
 	Reason               string    `json:"reason,omitempty"`
 	DisputeAmount        *Currency `json:"dispute_amount,omitempty"`
 	Notes                string    `json:"notes,omitempty"`
+}
+
+type DisputeListParam struct {
+	StartTime             string
+	DisputedTransactionId string
+	PageSize              int
+	NextPageToken         string
+	TotalRequired         bool
+	DisputeState          string
+}
+
+func (this *DisputeListParam) QueryString() string {
+	var p = url.Values{}
+	if len(this.StartTime) > 0 {
+		p.Set("start_time", this.StartTime)
+	}
+	if len(this.DisputedTransactionId) > 0 {
+		p.Set("disputed_transaction_id", this.DisputedTransactionId)
+	}
+	if this.PageSize > 0 {
+		p.Set("page_size", fmt.Sprintf("%d", this.PageSize))
+	}
+	if len(this.NextPageToken) > 0 {
+		p.Set("next_page_token", this.NextPageToken)
+	}
+	p.Set("total_required", fmt.Sprintf("%t", this.TotalRequired))
+	if len(this.DisputeState) > 0 {
+		p.Set("dispute_state", this.DisputeState)
+	}
+	return "?" + p.Encode()
+}
+
+type DisputeList struct {
+	Items      []*Dispute `json:"items"`
+	TotalItems int        `json:"total_items"`
+	TotalPages int        `json:"total_pages"`
+	Links      []*Link    `json:"links"`
 }

@@ -1,7 +1,7 @@
 package paypal
 
 const (
-	k_WEB_PROFILES_API      = "/v1/payment-experience/web-profiles/"
+	k_WEB_PROFILES_API = "/v1/payment-experience/web-profiles/"
 )
 
 // CreateWebExperienceProfile https://developer.paypal.com/docs/api/payment-experience/#web-profile
