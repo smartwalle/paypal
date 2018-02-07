@@ -279,7 +279,9 @@ type PaymentList struct {
 	NextId   string     `json:"next_id,omitempty"`
 }
 
-type refundSaleParam struct {
+type RefundSaleParam struct {
 	Amount        *Amount `json:"amount,omitempty"`
+	Description   string  `json:"description,omitempty"`
+	Reason        string  `json:"reason,omitempty"`
 	InvoiceNumber string  `json:"invoice_number,omitempty"`
 }
