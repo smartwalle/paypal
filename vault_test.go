@@ -1,7 +1,6 @@
 package paypal
 
 import (
-	"fmt"
 	"testing"
 )
 
