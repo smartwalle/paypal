@@ -59,7 +59,7 @@ type CreditCardListParam struct {
 	MerchantId         string
 	ExternalCardId     string
 	ExternalCustomerId string
-	//TotalRequired         bool
+	TotalRequired      bool
 }
 
 func (this *CreditCardListParam) QueryString() string {
@@ -91,13 +91,13 @@ func (this *CreditCardListParam) QueryString() string {
 	if len(this.ExternalCustomerId) > 0 {
 		p.Set("external_customer_id", this.ExternalCustomerId)
 	}
-	//p.Set("total_required", fmt.Sprintf("%t", this.TotalRequired))
+	p.Set("total_required", fmt.Sprintf("%t", this.TotalRequired))
 	return "?" + p.Encode()
 }
 
 type CreditCardList struct {
-	Items      []*CreditCard `json:"items"`
-	TotalItems int           `json:"total_items"`
-	TotalPages int           `json:"total_pages"`
-	Links      []*Link       `json:"links"`
+	Items      []*CreditCard `json:"items,omitempty"`
+	TotalItems int           `json:"total_items,omitempty"`
+	TotalPages int           `json:"total_pages,omitempty"`
+	Links      []*Link       `json:"links,omitempty"`
 }

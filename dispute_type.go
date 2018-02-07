@@ -79,8 +79,7 @@ type DisputeListParam struct {
 	DisputedTransactionId string
 	PageSize              int
 	NextPageToken         string
-	//TotalRequired         bool
-	DisputeState string
+	DisputeState          string
 }
 
 func (this *DisputeListParam) QueryString() string {
@@ -97,7 +96,6 @@ func (this *DisputeListParam) QueryString() string {
 	if len(this.NextPageToken) > 0 {
 		p.Set("next_page_token", this.NextPageToken)
 	}
-	//p.Set("total_required", fmt.Sprintf("%t", this.TotalRequired))
 	if len(this.DisputeState) > 0 {
 		p.Set("dispute_state", this.DisputeState)
 	}
@@ -105,8 +103,6 @@ func (this *DisputeListParam) QueryString() string {
 }
 
 type DisputeList struct {
-	Items      []*Dispute `json:"items"`
-	TotalItems int        `json:"total_items"`
-	TotalPages int        `json:"total_pages"`
-	Links      []*Link    `json:"links"`
+	Items []*Dispute `json:"items,omitempty"`
+	Links []*Link    `json:"links,omitempty"`
 }

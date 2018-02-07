@@ -12,7 +12,7 @@ func (this *PayPal) StoreCreditCard(param *CreditCard) (results *CreditCard, err
 }
 
 // GetCreditCardList https://developer.paypal.com/docs/api/vault/#credit-cards_list
-func (this *PayPal) GetCreditCardList(param *CreditCardListParam) (results CreditCardList, err error) {
+func (this *PayPal) GetCreditCardList(param *CreditCardListParam) (results *CreditCardList, err error) {
 	var api = this.BuildAPI(k_CREDIT_CARDS_API) + param.QueryString()
 	err = this.doRequestWithAuth("GET", api, nil, &results)
 	return results, err
