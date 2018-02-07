@@ -80,7 +80,7 @@ type DisputeListParam struct {
 	PageSize              int
 	NextPageToken         string
 	//TotalRequired         bool
-	DisputeState          string
+	DisputeState string
 }
 
 func (this *DisputeListParam) QueryString() string {

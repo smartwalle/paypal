@@ -6,10 +6,20 @@ import (
 )
 
 type PayerInfo struct {
-	Email           string           `json:"email"`
-	FirstName       string           `json:"first_name"`
-	LastName        string           `json:"last_name"`
-	PayerId         string           `json:"payer_id"`
+	Email           string           `json:"email,omitempty"`
+	Salutation      string           `json:"salutation,omitempty"`
+	FirstName       string           `json:"first_name,omitempty"`
+	MiddleName      string           `json:"middle_name,omitempty"`
+	LastName        string           `json:"last_name,omitempty"`
+	Suffix          string           `json:"suffix,omitempty"`
+	PayerId         string           `json:"payer_id,omitempty"`
+	Phone           string           `json:"phone,omitempty"`
+	PhoneType       string           `json:"phone_type,omitempty"`
+	BirthDate       string           `json:"birth_date,omitempty"`
+	TaxId           string           `json:"tax_id,omitempty"`
+	TaxIdType       string           `json:"tax_id_type,omitempty"`
+	CountryCode     string           `json:"country_code,omitempty"`
+	BillingAddress  *BillingAddress  `json:"billing_address,omitempty"`
 	ShippingAddress *ShippingAddress `json:"shipping_address,omitempty"`
 }
 
@@ -21,9 +31,15 @@ const (
 )
 
 type Payer struct {
-	PaymentMethod PaymentMethod `json:"payment_method"`
-	Status        string        `json:"status,omitempty"`
-	PayerInfo     *PayerInfo    `json:"payer_info,omitempty"`
+	PaymentMethod     PaymentMethod      `json:"payment_method,omitempty"`
+	Status            string             `json:"status,omitempty"`
+	PayerInfo         *PayerInfo         `json:"payer_info,omitempty"`
+	FundingInstrument *FundingInstrument `json:"funding_instrument,omitempty"`
+}
+
+type FundingInstrument struct {
+	CreditCard      *CreditCard      `json:"credit_card,omitempty"`
+	CreditCardToken *CreditCardToken `json:"credit_card_token,omitempty"`
 }
 
 type AmountDetails struct {
@@ -37,34 +53,34 @@ type AmountDetails struct {
 }
 
 type Amount struct {
-	Total    string         `json:"total,omitempty"`
-	Currency string         `json:"currency,omitempty"`
+	Total    string         `json:"total,omitempty"`    // required
+	Currency string         `json:"currency,omitempty"` // required
 	Details  *AmountDetails `json:"details,omitempty"`
 }
 
 type PaymentOptions struct {
-	AllowedPaymentMethod string `json:"allowed_payment_method"`
+	AllowedPaymentMethod string `json:"allowed_payment_method,omitempty"`
 }
 
 type Item struct {
-	Name        string      `json:"name"`
-	Description string      `json:"description"`
-	Quantity    interface{} `json:"quantity"` // string or int
-	Price       string      `json:"price"`
-	Tax         string      `json:"tax"`
-	SKU         string      `json:"sku"`
-	Currency    string      `json:"currency"`
+	Name        string      `json:"name,omitempty"`
+	Description string      `json:"description,omitempty"`
+	Quantity    interface{} `json:"quantity,omitempty"` // string or int
+	Price       string      `json:"price,omitempty"`
+	Tax         string      `json:"tax,omitempty"`
+	SKU         string      `json:"sku,omitempty"`
+	Currency    string      `json:"currency,omitempty"`
 }
 
 type ShippingAddress struct {
-	RecipientName string `json:"recipient_name"`
-	Line1         string `json:"line1"`
-	Line2         string `json:"line2"`
-	City          string `json:"city"`
-	CountryCode   string `json:"country_code"`
-	PostalCode    string `json:"postal_code"`
-	Phone         string `json:"phone"`
-	State         string `json:"state"`
+	RecipientName string `json:"recipient_name,omitempty"`
+	Line1         string `json:"line1,omitempty"`
+	Line2         string `json:"line2,omitempty"`
+	City          string `json:"city,omitempty"`
+	CountryCode   string `json:"country_code,omitempty"`
+	PostalCode    string `json:"postal_code,omitempty"`
+	Phone         string `json:"phone,omitempty"`
+	State         string `json:"state,omitempty"`
 }
 
 type ItemList struct {
@@ -161,7 +177,7 @@ type Refund struct {
 
 type Transaction struct {
 	ReferenceId    string          `json:"reference_id,omitempty"`
-	Amount         *Amount         `json:"amount,omitempty"`
+	Amount         *Amount         `json:"amount,omitempty"` // required
 	Payee          *Payee          `json:"payee,omitempty"`
 	Description    string          `json:"description,omitempty"`
 	NoteToPayee    string          `json:"note_to_payee,omitempty"`
@@ -178,13 +194,13 @@ type Transaction struct {
 }
 
 type Payee struct {
-	MerchantID string `json:"merchant_id"`
-	Email      string `json:"email"`
+	MerchantID string `json:"merchant_id,omitempty"`
+	Email      string `json:"email,omitempty"`
 }
 
 type RedirectURLs struct {
-	ReturnURL string `json:"return_url"`
-	CancelURL string `json:"cancel_url"`
+	ReturnURL string `json:"return_url,omitempty"`
+	CancelURL string `json:"cancel_url,omitempty"`
 }
 
 type PaymentIntent string
@@ -204,10 +220,11 @@ const (
 )
 
 type Payment struct {
-	Intent              PaymentIntent  `json:"intent"`
+	// Request body
+	Intent              PaymentIntent  `json:"intent,omitempty"`       // required
+	Payer               *Payer         `json:"payer,omitempty"`        // required
+	Transactions        []*Transaction `json:"transactions,omitempty"` // required
 	ExperienceProfileId string         `json:"experience_profile_id,omitempty"`
-	Payer               *Payer         `json:"payer"`
-	Transactions        []*Transaction `json:"transactions"`
 	NoteToPayer         string         `json:"note_to_payer,omitempty"`
 	RedirectURLs        *RedirectURLs  `json:"redirect_urls"`
 
@@ -257,15 +274,12 @@ func (this *PaymentListParam) QueryString() string {
 }
 
 type PaymentList struct {
-	Payments []*Payment `json:"payments"`
-	Count    int        `json:"count"`
-	NextId   string     `json:"next_id"`
+	Payments []*Payment `json:"payments,omitempty"`
+	Count    int        `json:"count,omitempty"`
+	NextId   string     `json:"next_id,omitempty"`
 }
 
 type refundSaleParam struct {
-	Amount struct {
-		Total    string `json:"total"`
-		Currency string `json:"currency"`
-	} `json:"amount"`
-	InvoiceNumber string `json:"invoice_number"`
+	Amount        *Amount `json:"amount,omitempty"`
+	InvoiceNumber string  `json:"invoice_number,omitempty"`
 }
