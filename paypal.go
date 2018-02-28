@@ -3,14 +3,14 @@ package paypal
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
-	"log"
-	"fmt"
 )
 
 const (
@@ -28,11 +28,13 @@ type PayPal struct {
 	apiDomain    string
 	isProduction bool
 	Token        *Token
+	Client       *http.Client
 	logger       *log.Logger
 }
 
 func New(clientId, secret string, isProduction bool) (client *PayPal) {
 	client = &PayPal{}
+	client.Client = http.DefaultClient
 	client.clientId = clientId
 	client.secret = secret
 	client.isProduction = isProduction
@@ -144,7 +146,7 @@ func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
 		data []byte
 	)
 
-	rsp, err = http.DefaultClient.Do(req)
+	rsp, err = this.Client.Do(req)
 	if err != nil {
 		return err
 	}
