@@ -5,9 +5,16 @@ import (
 )
 
 //func TestPayPal_ExpressCreatePayment(t *testing.T) {
-//	fmt.Println(getPayPal().ExpressCreatePayment("10", "USD", "http://www.baidu.com", "http://192.168.192.250:3000/paypal"))
+//	var p , err = paypal.ExpressCreatePayment("test_invoice_number", "10", "USD", "http://www.baidu.com", "http://192.168.192.250:3000/paypal")
+//	if err != nil {
+//		fmt.Println(err)
+//		return
+//	}
+//	for _, link := range p.Links {
+//		fmt.Println(link.Method, link.Rel, link.Href)
+//	}
 //}
-//
+
 func TestPayPal_CreatePayment(t *testing.T) {
 	//var p = &Payment{}
 	//p.Intent = K_PAYMENT_INTENT_SALE

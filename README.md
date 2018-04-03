@@ -93,7 +93,7 @@ var token, err = client.GetAccessToken() // 获取 Access Token
 ##### 1. 快速创建账单
 
 ```Golang
-var payment, err = client.ExpressCreatePayment(total, currency, cancelURL, returnURL)
+var payment, err = client.ExpressCreatePayment(invoiceNumber, total, currency, cancelURL, returnURL)
 ...
 ```
 
