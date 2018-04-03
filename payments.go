@@ -14,7 +14,7 @@ func (this *PayPal) CreatePayment(payment *Payment) (results *Payment, err error
 	return results, err
 }
 
-func (this *PayPal) ExpressCreatePayment(total, currency, cancelURL, returnURL string) (results *Payment, err error) {
+func (this *PayPal) ExpressCreatePayment(invoiceNumber, total, currency, cancelURL, returnURL string) (results *Payment, err error) {
 	var p = &Payment{}
 	p.Intent = K_PAYMENT_INTENT_SALE
 	p.Payer = &Payer{}
@@ -24,6 +24,7 @@ func (this *PayPal) ExpressCreatePayment(total, currency, cancelURL, returnURL s
 	p.RedirectURLs.ReturnURL = returnURL
 
 	var transaction = &Transaction{}
+	transaction.InvoiceNumber = invoiceNumber
 	p.Transactions = []*Transaction{transaction}
 
 	transaction.Amount = &Amount{}
