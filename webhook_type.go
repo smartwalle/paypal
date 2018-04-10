@@ -75,6 +75,13 @@ func (this *Event) Dispute() *Dispute {
 	return nil
 }
 
+func (this *Event) Refund() *Refund {
+	if s, ok := this.Resource.(*Refund); ok {
+		return s
+	}
+	return nil
+}
+
 type verifyWebhookSignatureParam struct {
 	AuthAlgo         string      `json:"auth_algo"`
 	CertURL          string      `json:"cert_url"`
