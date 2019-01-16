@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -29,7 +28,6 @@ type PayPal struct {
 	isProduction bool
 	Token        *Token
 	Client       *http.Client
-	logger       *log.Logger
 }
 
 func New(clientId, secret string, isProduction bool) (client *PayPal) {
@@ -63,24 +61,6 @@ func (this *PayPal) BuildAPI(paths ...string) string {
 		}
 	}
 	return path
-}
-
-func (this *PayPal) SetLogWriter(w io.Writer) {
-	if w == nil {
-		this.logger = nil
-		return
-	}
-	if this.logger != nil {
-		this.logger.SetOutput(w)
-		return
-	}
-	this.logger = log.New(w, "[PayPal]", log.Ldate|log.Ltime)
-}
-
-func (this *PayPal) log(args ...interface{}) {
-	if this.logger != nil {
-		this.logger.Println(args...)
-	}
 }
 
 func (this *PayPal) doRequestWithAuth(method, url string, param, result interface{}) (err error) {
@@ -158,23 +138,21 @@ func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
 	}
 
 	if req.URL.Path != k_GET_ACCESS_TOKEN_API {
-		if this.logger != nil {
-			var buf = &bytes.Buffer{}
-			buf.WriteString("\n=========== Begin ============")
-			buf.WriteString("\n【请求信息】")
-			buf.WriteString(fmt.Sprintf("\n%s %d %s", req.Method, rsp.StatusCode, req.URL.String()))
-			for key := range req.Header {
-				buf.WriteString(fmt.Sprintf("\n%s: %s", key, req.Header.Get(key)))
-			}
-			buf.WriteString("\n【返回信息】")
-			for key := range rsp.Header {
-				buf.WriteString(fmt.Sprintf("\n%s: %s", key, rsp.Header.Get(key)))
-			}
-			buf.WriteString(fmt.Sprintf("\n%s", string(data)))
-			buf.WriteString("\n===========  End  ============")
-
-			this.log(buf.String())
+		var buf = &bytes.Buffer{}
+		buf.WriteString("\n=========== Begin ============")
+		buf.WriteString("\n【请求信息】")
+		buf.WriteString(fmt.Sprintf("\n%s %d %s", req.Method, rsp.StatusCode, req.URL.String()))
+		for key := range req.Header {
+			buf.WriteString(fmt.Sprintf("\n%s: %s", key, req.Header.Get(key)))
 		}
+		buf.WriteString("\n【返回信息】")
+		for key := range rsp.Header {
+			buf.WriteString(fmt.Sprintf("\n%s: %s", key, rsp.Header.Get(key)))
+		}
+		buf.WriteString(fmt.Sprintf("\n%s", string(data)))
+		buf.WriteString("\n===========  End  ============")
+
+		logger.Println(buf.String())
 	}
 
 	switch rsp.StatusCode {
