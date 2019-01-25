@@ -13,12 +13,12 @@ import (
 )
 
 const (
-	k_PAY_PAL_SANDBOX_API_URL    = "https://api.sandbox.paypal.com"
-	k_PAY_PAL_PRODUCTION_API_URL = "https://api.paypal.com"
+	kSandboxURL    = "https://api.sandbox.paypal.com"
+	kProductionURL = "https://api.paypal.com"
 )
 
 const (
-	k_GET_ACCESS_TOKEN_API = "/v1/oauth2/token"
+	kGetAccessTokenAPI = "/v1/oauth2/token"
 )
 
 type PayPal struct {
@@ -37,9 +37,9 @@ func New(clientId, secret string, isProduction bool) (client *PayPal) {
 	client.secret = secret
 	client.isProduction = isProduction
 	if isProduction {
-		client.apiDomain = k_PAY_PAL_PRODUCTION_API_URL
+		client.apiDomain = kProductionURL
 	} else {
-		client.apiDomain = k_PAY_PAL_SANDBOX_API_URL
+		client.apiDomain = kSandboxURL
 	}
 	return client
 }
@@ -81,7 +81,7 @@ func (this *PayPal) doRequestWithAuth(method, url string, param, result interfac
 }
 
 func (this *PayPal) GetAccessToken() (token *Token, err error) {
-	var api = this.BuildAPI(k_GET_ACCESS_TOKEN_API)
+	var api = this.BuildAPI(kGetAccessTokenAPI)
 
 	var p = url.Values{}
 	p.Add("grant_type", "client_credentials")
@@ -137,7 +137,7 @@ func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
 		return err
 	}
 
-	if req.URL.Path != k_GET_ACCESS_TOKEN_API {
+	if req.URL.Path != kGetAccessTokenAPI {
 		var buf = &bytes.Buffer{}
 		buf.WriteString("\n=========== Begin ============")
 		buf.WriteString("\n【请求信息】")

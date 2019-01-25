@@ -9,13 +9,13 @@ import (
 )
 
 const (
-	k_WEBHOOK_API                  = "/v1/notifications/webhooks"
-	k_VERITY_WEBHOOK_SIGNATURE_API = "/v1/notifications/verify-webhook-signature"
+	kWebHookAPI                = "/v1/notifications/webhooks"
+	kVerityWebHookSignatureAPI = "/v1/notifications/verify-webhook-signature"
 )
 
 // CreateWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_create
 func (this *PayPal) CreateWebhook(callBackURL string, eventTypeList ...string) (results *Webhook, err error) {
-	var api = this.BuildAPI(k_WEBHOOK_API)
+	var api = this.BuildAPI(kWebHookAPI)
 	var p = &Webhook{}
 
 	var events = make([]*EventType, 0, len(eventTypeList))
@@ -33,28 +33,28 @@ func (this *PayPal) CreateWebhook(callBackURL string, eventTypeList ...string) (
 
 // GetWebhookList https://developer.paypal.com/docs/api/webhooks/#webhooks_get-all
 func (this *PayPal) GetWebhookList() (results *WebhookList, err error) {
-	var api = this.BuildAPI(k_WEBHOOK_API)
+	var api = this.BuildAPI(kWebHookAPI)
 	err = this.doRequestWithAuth("GET", api, nil, &results)
 	return results, err
 }
 
 // GetWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_get
 func (this *PayPal) GetWebhookDetails(webhookId string) (results *Webhook, err error) {
-	var api = this.BuildAPI(k_WEBHOOK_API, webhookId)
+	var api = this.BuildAPI(kWebHookAPI, webhookId)
 	err = this.doRequestWithAuth("GET", api, nil, &results)
 	return results, err
 }
 
 // DeleteWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_delete
 func (this *PayPal) DeleteWebhook(webhookId string) (err error) {
-	var api = this.BuildAPI(k_WEBHOOK_API, webhookId)
+	var api = this.BuildAPI(kWebHookAPI, webhookId)
 	err = this.doRequestWithAuth("DELETE", api, nil, nil)
 	return err
 }
 
 // verifyWebhookSignature https://developer.paypal.com/docs/api/webhooks/#verify-webhook-signature_post
 func (this *PayPal) verifyWebhookSignature(param *verifyWebhookSignatureParam) (results *verifyWebhookSignatureResponse, err error) {
-	var api = this.BuildAPI(k_VERITY_WEBHOOK_SIGNATURE_API)
+	var api = this.BuildAPI(kVerityWebHookSignatureAPI)
 	err = this.doRequestWithAuth("POST", api, param, &results)
 	return results, err
 }
