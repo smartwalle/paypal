@@ -176,7 +176,7 @@ func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
 		}
 		return e
 	case http.StatusNoContent:
-		if req.Method == "DELETE" {
+		if req.Method == http.MethodDelete {
 			return nil
 		}
 		fallthrough

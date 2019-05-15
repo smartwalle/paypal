@@ -2,6 +2,10 @@ package paypal
 
 import "time"
 
+const (
+	kSuccess = "SUCCESS"
+)
+
 type jsonString string
 
 func (this jsonString) MarshalJSON() ([]byte, error) {

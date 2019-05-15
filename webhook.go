@@ -27,35 +27,35 @@ func (this *PayPal) CreateWebhook(callBackURL string, eventTypeList ...string) (
 	p.EventTypes = events
 
 	p.URL = callBackURL
-	err = this.doRequestWithAuth("POST", api, p, &results)
+	err = this.doRequestWithAuth(http.MethodPost, api, p, &results)
 	return results, err
 }
 
 // GetWebhookList https://developer.paypal.com/docs/api/webhooks/#webhooks_get-all
 func (this *PayPal) GetWebhookList() (results *WebhookList, err error) {
 	var api = this.BuildAPI(kWebHookAPI)
-	err = this.doRequestWithAuth("GET", api, nil, &results)
+	err = this.doRequestWithAuth(http.MethodGet, api, nil, &results)
 	return results, err
 }
 
 // GetWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_get
 func (this *PayPal) GetWebhookDetails(webhookId string) (results *Webhook, err error) {
 	var api = this.BuildAPI(kWebHookAPI, webhookId)
-	err = this.doRequestWithAuth("GET", api, nil, &results)
+	err = this.doRequestWithAuth(http.MethodGet, api, nil, &results)
 	return results, err
 }
 
 // DeleteWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_delete
 func (this *PayPal) DeleteWebhook(webhookId string) (err error) {
 	var api = this.BuildAPI(kWebHookAPI, webhookId)
-	err = this.doRequestWithAuth("DELETE", api, nil, nil)
+	err = this.doRequestWithAuth(http.MethodDelete, api, nil, nil)
 	return err
 }
 
 // verifyWebhookSignature https://developer.paypal.com/docs/api/webhooks/#verify-webhook-signature_post
 func (this *PayPal) verifyWebhookSignature(param *verifyWebhookSignatureParam) (results *verifyWebhookSignatureResponse, err error) {
 	var api = this.BuildAPI(kVerityWebHookSignatureAPI)
-	err = this.doRequestWithAuth("POST", api, param, &results)
+	err = this.doRequestWithAuth(http.MethodPost, api, param, &results)
 	return results, err
 }
 
@@ -127,7 +127,7 @@ func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event 
 		return nil, err
 	}
 
-	if verifyResp.VerificationStatus != "SUCCESS" {
+	if verifyResp.VerificationStatus != kSuccess {
 		return nil, errors.New(fmt.Sprintf("verify webhook %s", verifyResp.VerificationStatus))
 	}
 
