@@ -21,7 +21,7 @@ const (
 	kGetAccessTokenAPI = "/v1/oauth2/token"
 )
 
-type PayPal struct {
+type Client struct {
 	clientId     string
 	secret       string
 	apiDomain    string
@@ -30,8 +30,8 @@ type PayPal struct {
 	Client       *http.Client
 }
 
-func New(clientId, secret string, isProduction bool) (client *PayPal) {
-	client = &PayPal{}
+func New(clientId, secret string, isProduction bool) (client *Client) {
+	client = &Client{}
 	client.Client = http.DefaultClient
 	client.clientId = clientId
 	client.secret = secret
@@ -44,7 +44,7 @@ func New(clientId, secret string, isProduction bool) (client *PayPal) {
 	return client
 }
 
-func (this *PayPal) BuildAPI(paths ...string) string {
+func (this *Client) BuildAPI(paths ...string) string {
 	var path = this.apiDomain
 	for _, p := range paths {
 		p = strings.TrimSpace(p)
@@ -63,7 +63,7 @@ func (this *PayPal) BuildAPI(paths ...string) string {
 	return path
 }
 
-func (this *PayPal) doRequestWithAuth(method, url string, param, result interface{}) (err error) {
+func (this *Client) doRequestWithAuth(method, url string, param, result interface{}) (err error) {
 	if this.Token == nil || this.Token.ExpiresAt.Before(time.Now()) {
 		this.Token, err = this.GetAccessToken()
 		if err != nil {
@@ -80,7 +80,7 @@ func (this *PayPal) doRequestWithAuth(method, url string, param, result interfac
 	return this.doRequest(req, result)
 }
 
-func (this *PayPal) GetAccessToken() (token *Token, err error) {
+func (this *Client) GetAccessToken() (token *Token, err error) {
 	var api = this.BuildAPI(kGetAccessTokenAPI)
 
 	var p = url.Values{}
@@ -100,7 +100,7 @@ func (this *PayPal) GetAccessToken() (token *Token, err error) {
 	return token, err
 }
 
-func (this *PayPal) request(method, url string, payload interface{}) (*http.Request, error) {
+func (this *Client) request(method, url string, payload interface{}) (*http.Request, error) {
 	var buf io.Reader
 	if payload != nil {
 		b, err := json.Marshal(payload)
@@ -112,7 +112,7 @@ func (this *PayPal) request(method, url string, payload interface{}) (*http.Requ
 	return http.NewRequest(method, url, buf)
 }
 
-func (this *PayPal) doRequest(req *http.Request, result interface{}) error {
+func (this *Client) doRequest(req *http.Request, result interface{}) error {
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Accept-Language", "en_US")
 

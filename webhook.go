@@ -14,7 +14,7 @@ const (
 )
 
 // CreateWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_create
-func (this *PayPal) CreateWebhook(callBackURL string, eventTypeList ...string) (results *Webhook, err error) {
+func (this *Client) CreateWebhook(callBackURL string, eventTypeList ...string) (results *Webhook, err error) {
 	var api = this.BuildAPI(kWebHookAPI)
 	var p = &Webhook{}
 
@@ -32,35 +32,35 @@ func (this *PayPal) CreateWebhook(callBackURL string, eventTypeList ...string) (
 }
 
 // GetWebhookList https://developer.paypal.com/docs/api/webhooks/#webhooks_get-all
-func (this *PayPal) GetWebhookList() (results *WebhookList, err error) {
+func (this *Client) GetWebhookList() (results *WebhookList, err error) {
 	var api = this.BuildAPI(kWebHookAPI)
 	err = this.doRequestWithAuth(http.MethodGet, api, nil, &results)
 	return results, err
 }
 
 // GetWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_get
-func (this *PayPal) GetWebhookDetails(webhookId string) (results *Webhook, err error) {
+func (this *Client) GetWebhookDetails(webhookId string) (results *Webhook, err error) {
 	var api = this.BuildAPI(kWebHookAPI, webhookId)
 	err = this.doRequestWithAuth(http.MethodGet, api, nil, &results)
 	return results, err
 }
 
 // DeleteWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_delete
-func (this *PayPal) DeleteWebhook(webhookId string) (err error) {
+func (this *Client) DeleteWebhook(webhookId string) (err error) {
 	var api = this.BuildAPI(kWebHookAPI, webhookId)
 	err = this.doRequestWithAuth(http.MethodDelete, api, nil, nil)
 	return err
 }
 
 // verifyWebhookSignature https://developer.paypal.com/docs/api/webhooks/#verify-webhook-signature_post
-func (this *PayPal) verifyWebhookSignature(param *verifyWebhookSignatureParam) (results *verifyWebhookSignatureResponse, err error) {
+func (this *Client) verifyWebhookSignature(param *verifyWebhookSignatureParam) (results *verifyWebhookSignatureResponse, err error) {
 	var api = this.BuildAPI(kVerityWebHookSignatureAPI)
 	err = this.doRequestWithAuth(http.MethodPost, api, param, &results)
 	return results, err
 }
 
 // GetWebhookEvent 用于处理 webbook 回调
-func (this *PayPal) GetWebhookEvent(webhookId string, req *http.Request) (event *Event, err error) {
+func (this *Client) GetWebhookEvent(webhookId string, req *http.Request) (event *Event, err error) {
 	req.ParseForm()
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil || len(body) == 0 {
