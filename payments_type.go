@@ -262,7 +262,7 @@ func (this *PaymentListParam) QueryString() string {
 		p.Set("start_index", fmt.Sprintf("%d", this.StartIndex))
 	}
 	if this.Count > 0 {
-		p.Set("count", fmt.Sprintf("%f", this.Count))
+		p.Set("count", fmt.Sprintf("%d", this.Count))
 	}
 	if len(this.SortBy) > 0 {
 		p.Set("sort_by", this.SortBy)
