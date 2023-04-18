@@ -100,21 +100,21 @@ var payment, err = client.ExpressCreatePayment(invoiceNumber, total, currency, c
 ##### 2. 高级接口
 
 ```Golang
-var p = &Payment{}
-p.Intent = K_PAYPAL_PAYMENT_INTENT_SALE
-p.Payer = &Payer{}
+var p = &paypal.Payment{}
+p.Intent = paypal.PaymentIntentSale
+p.Payer = &paypal.Payer{}
 p.Payer.PaymentMethod = "paypal"
-p.RedirectURLs = &RedirectURLs{}
+p.RedirectURLs = &paypal.RedirectURLs{}
 p.RedirectURLs.CancelURL = "http://www.baidu.com"
 p.RedirectURLs.ReturnURL = "http://127.0.0.1:9001/paypal"
 
-var transaction = &Transaction{}
-p.Transactions = []*Transaction{transaction}
+var transaction = &paypal.Transaction{}
+p.Transactions = []*paypal.Transaction{transaction}
 
-transaction.Amount = &Amount{}
+transaction.Amount = &paypal.Amount{}
 transaction.Amount.Total = "30.11"
 transaction.Amount.Currency = "USD"
-transaction.Amount.Details = &AmountDetails{}
+transaction.Amount.Details = &paypal.AmountDetails{}
 transaction.Amount.Details.Subtotal = "30.00"
 transaction.Amount.Details.Tax = "0.07"
 transaction.Amount.Details.Shipping = "0.03"
@@ -126,12 +126,12 @@ transaction.Description = "This is the payment transaction description."
 transaction.Custom = "EBAY_EMS_90048630024435"
 transaction.InvoiceNumber = uuid.New() // 随机生成一串 Invoice Number
 
-transaction.PaymentOptions = &PaymentOptions{}
+transaction.PaymentOptions = &paypal.PaymentOptions{}
 transaction.PaymentOptions.AllowedPaymentMethod = "INSTANT_FUNDING_SOURCE"
 transaction.SoftDescriptor = "ECHI5786786"
 
-transaction.ItemList = &ItemList{}
-transaction.ItemList.ShippingAddress = &ShippingAddress{}
+transaction.ItemList = &paypal.ItemList{}
+transaction.ItemList.ShippingAddress = &paypal.ShippingAddress{}
 transaction.ItemList.ShippingAddress.RecipientName = "Hello World"
 transaction.ItemList.ShippingAddress.Line1 = "4thFloor"
 transaction.ItemList.ShippingAddress.Line2 = "unit#34"
@@ -141,8 +141,8 @@ transaction.ItemList.ShippingAddress.PostalCode = "95131"
 transaction.ItemList.ShippingAddress.Phone = "011862212345678"
 transaction.ItemList.ShippingAddress.State = "CA"
 
-var i1, i2 = &Item{}, &Item{}
-transaction.ItemList.Items = []*Item{i1, i2}
+var i1, i2 = &paypal.Item{}, &paypal.Item{}
+transaction.ItemList.Items = []*paypal.Item{i1, i2}
 
 i1.Name = "hat"
 i1.Description = "Brown color hat"
@@ -191,7 +191,7 @@ http://192.168.192.250:3000/paypal?paymentId=PAY-37A82711YL064934DLB4G3AQ&token=
 
 核准账单支付信息的时候，需要用到 paymentId 和 payerID。
 
-我们在提供的 ReturnURL 服务中应执行核准账单支付信息的操作。
+我们在提供的 ReturnURL 接口中应执行核准账单支付信息的操作。
 
 ```Golang
 var payment, err = client.ExecuteApprovedPayment(paymentId, payerID)
@@ -224,7 +224,7 @@ var payment, err = client.ExecuteApprovedPayment(paymentId, payerID)
 	```
 
 3. 从账单中获取类型为 approval_url 的 URL，浏览器打开进行支付
-4. ReturnURL 服务中进行核准账单支付
+4. ReturnURL 接口中进行核准账单支付
 
 	```
 	var client = paypal.New(...)

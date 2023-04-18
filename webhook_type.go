@@ -3,26 +3,26 @@ package paypal
 type ResourceType string
 
 const (
-	K_EVENT_RESOURCE_TYPE_INVOICES ResourceType = "invoices"
-	K_EVENT_RESOURCE_TYPE_SALE     ResourceType = "sale"
-	K_EVENT_RESOURCE_TYPE_REFUND   ResourceType = "refund"
-	K_EVENT_RESOURCE_TYPE_DISPUTE  ResourceType = "dispute"
+	EventResourceTypeInvoices ResourceType = "invoices"
+	EventResourceTypeSale     ResourceType = "sale"
+	EventResourceTypeRefund   ResourceType = "refund"
+	EventResourceTypeDispute  ResourceType = "dispute"
 )
 
 // https://developer.paypal.com/docs/integration/direct/webhooks/event-names/
 const (
-	K_EVENT_TYPE_PAYMENT_SALE_COMPLETED = "PAYMENT.SALE.COMPLETED"
-	K_EVENT_TYPE_PAYMENT_SALE_DENIED    = "PAYMENT.SALE.DENIED"
-	K_EVENT_TYPE_PAYMENT_SALE_PENDING   = "PAYMENT.SALE.PENDING"
+	EventTypePaymentSaleCompleted = "PAYMENT.SALE.COMPLETED"
+	EventTypePaymentSaleDenied    = "PAYMENT.SALE.DENIED"
+	EventTypePaymentSalePending   = "PAYMENT.SALE.PENDING"
 
 	// 退款成功
-	K_EVENT_TYPE_PAYMENT_SALE_REFUNDED = "PAYMENT.SALE.REFUNDED"
-	K_EVENT_TYPE_PAYMENT_SALE_REVERSED = "PAYMENT.SALE.REVERSED"
+	EventTypePaymentSaleRefunded = "PAYMENT.SALE.REFUNDED"
+	EventTypePaymentSaleReversed = "PAYMENT.SALE.REVERSED"
 
 	// 用户从 paypal 网站申请退款
-	K_EVENT_TYPE_CUSTOMER_DISPUTE_CREATED  = "CUSTOMER.DISPUTE.CREATED"
-	K_EVENT_TYPE_CUSTOMER_DISPUTE_RESOLVED = "CUSTOMER.DISPUTE.RESOLVED"
-	K_EVENT_TYPE_CUSTOMER_DISPUTE_UPDATED  = "CUSTOMER.DISPUTE.UPDATED"
+	EventTypeCustomerDisputeCreated  = "CUSTOMER.DISPUTE.CREATED"
+	EventTypeCustomerDisputeResolved = "CUSTOMER.DISPUTE.RESOLVED"
+	EventTypeCustomerDisputeUpdated  = "CUSTOMER.DISPUTE.UPDATED"
 )
 
 type EventType struct {

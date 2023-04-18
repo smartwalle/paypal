@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -14,7 +14,7 @@ const (
 )
 
 // CreateWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_create
-func (this *Client) CreateWebhook(callBackURL string, eventTypeList ...string) (results *Webhook, err error) {
+func (this *Client) CreateWebhook(callBackURL string, eventTypeList ...string) (result *Webhook, err error) {
 	var api = this.BuildAPI(kWebHookAPI)
 	var p = &Webhook{}
 
@@ -27,22 +27,22 @@ func (this *Client) CreateWebhook(callBackURL string, eventTypeList ...string) (
 	p.EventTypes = events
 
 	p.URL = callBackURL
-	err = this.doRequestWithAuth(http.MethodPost, api, p, &results)
-	return results, err
+	err = this.doRequestWithAuth(http.MethodPost, api, p, &result)
+	return result, err
 }
 
 // GetWebhookList https://developer.paypal.com/docs/api/webhooks/#webhooks_get-all
-func (this *Client) GetWebhookList() (results *WebhookList, err error) {
+func (this *Client) GetWebhookList() (result *WebhookList, err error) {
 	var api = this.BuildAPI(kWebHookAPI)
-	err = this.doRequestWithAuth(http.MethodGet, api, nil, &results)
-	return results, err
+	err = this.doRequestWithAuth(http.MethodGet, api, nil, &result)
+	return result, err
 }
 
-// GetWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_get
-func (this *Client) GetWebhookDetails(webhookId string) (results *Webhook, err error) {
+// GetWebhookDetails https://developer.paypal.com/docs/api/webhooks/#webhooks_get
+func (this *Client) GetWebhookDetails(webhookId string) (result *Webhook, err error) {
 	var api = this.BuildAPI(kWebHookAPI, webhookId)
-	err = this.doRequestWithAuth(http.MethodGet, api, nil, &results)
-	return results, err
+	err = this.doRequestWithAuth(http.MethodGet, api, nil, &result)
+	return result, err
 }
 
 // DeleteWebhook https://developer.paypal.com/docs/api/webhooks/#webhooks_delete
@@ -53,16 +53,16 @@ func (this *Client) DeleteWebhook(webhookId string) (err error) {
 }
 
 // verifyWebhookSignature https://developer.paypal.com/docs/api/webhooks/#verify-webhook-signature_post
-func (this *Client) verifyWebhookSignature(param *verifyWebhookSignatureParam) (results *verifyWebhookSignatureResponse, err error) {
+func (this *Client) verifyWebhookSignature(param *verifyWebhookSignatureParam) (result *verifyWebhookSignatureResponse, err error) {
 	var api = this.BuildAPI(kVerityWebHookSignatureAPI)
-	err = this.doRequestWithAuth(http.MethodPost, api, param, &results)
-	return results, err
+	err = this.doRequestWithAuth(http.MethodPost, api, param, &result)
+	return result, err
 }
 
 // GetWebhookEvent 用于处理 webbook 回调
 func (this *Client) GetWebhookEvent(webhookId string, req *http.Request) (event *Event, err error) {
 	req.ParseForm()
-	body, err := ioutil.ReadAll(req.Body)
+	body, err := io.ReadAll(req.Body)
 	if err != nil || len(body) == 0 {
 		return nil, err
 	}
@@ -81,25 +81,25 @@ func (this *Client) GetWebhookEvent(webhookId string, req *http.Request) (event 
 	}
 
 	switch event.ResourceType {
-	case K_EVENT_RESOURCE_TYPE_SALE:
+	case EventResourceTypeSale:
 		var sale *Sale
 		if err = json.Unmarshal(rawRes, &sale); err != nil {
 			return nil, err
 		}
 		event.Resource = sale
-	case K_EVENT_RESOURCE_TYPE_REFUND:
+	case EventResourceTypeRefund:
 		var refund *Refund
 		if err = json.Unmarshal(rawRes, &refund); err != nil {
 			return nil, err
 		}
 		event.Resource = refund
-	case K_EVENT_RESOURCE_TYPE_INVOICES:
+	case EventResourceTypeInvoices:
 		var invoice *Invoice
 		if err = json.Unmarshal(rawRes, &invoice); err != nil {
 			return nil, err
 		}
 		event.Resource = invoice
-	case K_EVENT_RESOURCE_TYPE_DISPUTE:
+	case EventResourceTypeDispute:
 		var dispute *Dispute
 		if err = json.Unmarshal(rawRes, &dispute); err != nil {
 			return nil, err

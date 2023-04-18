@@ -7,17 +7,17 @@ const (
 )
 
 // StoreCreditCard https://developer.paypal.com/docs/api/vault/#credit-cards_create
-func (this *Client) StoreCreditCard(param *CreditCard) (results *CreditCard, err error) {
+func (this *Client) StoreCreditCard(param *CreditCard) (result *CreditCard, err error) {
 	var api = this.BuildAPI(kCreditCardsAPI)
-	err = this.doRequestWithAuth(http.MethodPost, api, param, &results)
-	return results, err
+	err = this.doRequestWithAuth(http.MethodPost, api, param, &result)
+	return result, err
 }
 
 // GetCreditCardList https://developer.paypal.com/docs/api/vault/#credit-cards_list
-func (this *Client) GetCreditCardList(param *CreditCardListParam) (results *CreditCardList, err error) {
+func (this *Client) GetCreditCardList(param *CreditCardListParam) (result *CreditCardList, err error) {
 	var api = this.BuildAPI(kCreditCardsAPI) + param.QueryString()
-	err = this.doRequestWithAuth(http.MethodGet, api, nil, &results)
-	return results, err
+	err = this.doRequestWithAuth(http.MethodGet, api, nil, &result)
+	return result, err
 }
 
 // DeleteCreditCard https://developer.paypal.com/docs/api/vault/#credit-cards_delete
@@ -28,8 +28,8 @@ func (this *Client) DeleteCreditCard(creditCardId string) (err error) {
 }
 
 // GetCreditCardDetails https://developer.paypal.com/docs/api/vault/#credit-cards_delete
-func (this *Client) GetCreditCardDetails(creditCardId string) (results *CreditCard, err error) {
+func (this *Client) GetCreditCardDetails(creditCardId string) (result *CreditCard, err error) {
 	var api = this.BuildAPI(kCreditCardsAPI, creditCardId)
-	err = this.doRequestWithAuth(http.MethodGet, api, nil, &results)
-	return results, err
+	err = this.doRequestWithAuth(http.MethodGet, api, nil, &result)
+	return result, err
 }

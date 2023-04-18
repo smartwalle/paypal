@@ -19,7 +19,7 @@ func main() {
 			return
 		}
 		switch event.EventType {
-		case paypal.K_EVENT_TYPE_PAYMENT_SALE_COMPLETED:
+		case paypal.EventTypePaymentSaleCompleted:
 			var sale = event.Sale()
 			fmt.Println("支付成功", event.Id, event.ResourceType, event.EventType, sale.State, sale.ParentPayment, sale.InvoiceNumber)
 		}

@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	K_ERR_TYPE_VALIDATION_ERROR     = "VALIDATION_ERROR"
-	K_ERR_TYPE_INSTRUMENT_DECLINED  = "INSTRUMENT_DECLINED"
-	K_ERR_TYPE_PAYMENT_ALREADY_DONE = "PAYMENT_ALREADY_DONE"
+	ErrTypeValidation         = "VALIDATION_ERROR"
+	ErrTypeInstrumentDeclined = "INSTRUMENT_DECLINED"
+	ErrTypePaymentAlreadyDone = "PAYMENT_ALREADY_DONE"
 )
 
 type ResponseError struct {

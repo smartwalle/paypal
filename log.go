@@ -24,7 +24,7 @@ func SetLogger(l Logger) {
 		l = &nilLogger{}
 	}
 	if l.Prefix() == "" {
-		l.SetPrefix("[dbs] ")
+		l.SetPrefix("[paypal] ")
 	}
 	logger = l
 }

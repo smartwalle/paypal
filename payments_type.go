@@ -26,8 +26,8 @@ type PayerInfo struct {
 type PaymentMethod string
 
 const (
-	K_PAYMENT_METHOD_PAYPAL      PaymentMethod = "paypal"
-	K_PAYMENT_METHOD_CREDIT_CARD PaymentMethod = "credit_card"
+	PaymentMethodPayPal     PaymentMethod = "paypal"
+	PaymentMethodCreditCard PaymentMethod = "credit_card"
 )
 
 type Payer struct {
@@ -93,11 +93,11 @@ type ItemList struct {
 type SaleState string
 
 const (
-	K_SALE_STATE_COMPLETED          SaleState = "completed"
-	K_SALE_STATE_PARTIALLY_REFUNDED SaleState = "partially_refunded"
-	K_SALE_STATE_PENDING            SaleState = "pending"
-	K_SALE_STATE_REFUNDED           SaleState = "refunded"
-	K_SALE_STATE_DENIED             SaleState = "denied"
+	SaleStateCompleted         SaleState = "completed"
+	SaleStatePartiallyRefunded SaleState = "partially_refunded"
+	SaleStatePending           SaleState = "pending"
+	SaleStateRefunded          SaleState = "refunded"
+	SaleStateDenied            SaleState = "denied"
 )
 
 type Sale struct {
@@ -151,10 +151,10 @@ type ProcessorResponse struct {
 type RefundState string
 
 const (
-	K_REFUND_STATE_PENDING   RefundState = "pending"
-	K_REFUND_STATE_COMPLETED RefundState = "completed"
-	K_REFUND_STATE_CANCELLED RefundState = "cancelled"
-	K_REFUND_STATE_FAILED    RefundState = "failed"
+	RefundStatePending   RefundState = "pending"
+	RefundStateCompleted RefundState = "completed"
+	RefundStateCancelled RefundState = "cancelled"
+	RefundStateFailed    RefundState = "failed"
 )
 
 type Refund struct {
@@ -206,17 +206,17 @@ type RedirectURLs struct {
 type PaymentIntent string
 
 const (
-	K_PAYMENT_INTENT_SALE      PaymentIntent = "sale"
-	K_PAYMENT_INTENT_AUTHORIZE PaymentIntent = "authorize"
-	K_PAYMENT_INTENT_ORDER     PaymentIntent = "order"
+	PaymentIntentSale      PaymentIntent = "sale"
+	PaymentIntentAuthorize PaymentIntent = "authorize"
+	PaymentIntentOrder     PaymentIntent = "order"
 )
 
 type PaymentState string
 
 const (
-	K_PAYMENT_STATE_CREATED  PaymentState = "created"
-	K_PAYMENT_STATE_APPROVED PaymentState = "approved"
-	K_PAYMENT_STATE_FAILED   PaymentState = "failed"
+	PaymentStateCreated  PaymentState = "created"
+	PaymentStateApproved PaymentState = "approved"
+	PaymentStateFailed   PaymentState = "failed"
 )
 
 type Payment struct {

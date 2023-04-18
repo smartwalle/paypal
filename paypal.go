@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -83,10 +82,10 @@ func (this *Client) doRequestWithAuth(method, url string, param, result interfac
 func (this *Client) GetAccessToken() (token *Token, err error) {
 	var api = this.BuildAPI(kGetAccessTokenAPI)
 
-	var p = url.Values{}
-	p.Add("grant_type", "client_credentials")
+	var param = url.Values{}
+	param.Add("grant_type", "client_credentials")
 
-	req, err := http.NewRequest("POST", api, strings.NewReader(p.Encode()))
+	req, err := http.NewRequest("POST", api, strings.NewReader(param.Encode()))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.SetBasicAuth(this.clientId, this.secret)
 
@@ -100,16 +99,16 @@ func (this *Client) GetAccessToken() (token *Token, err error) {
 	return token, err
 }
 
-func (this *Client) request(method, url string, payload interface{}) (*http.Request, error) {
-	var buf io.Reader
-	if payload != nil {
-		b, err := json.Marshal(payload)
+func (this *Client) request(method, url string, param interface{}) (*http.Request, error) {
+	var body io.Reader
+	if param != nil {
+		data, err := json.Marshal(param)
 		if err != nil {
 			return nil, err
 		}
-		buf = bytes.NewBuffer(b)
+		body = bytes.NewBuffer(data)
 	}
-	return http.NewRequest(method, url, buf)
+	return http.NewRequest(method, url, body)
 }
 
 func (this *Client) doRequest(req *http.Request, result interface{}) error {
@@ -132,7 +131,7 @@ func (this *Client) doRequest(req *http.Request, result interface{}) error {
 	}
 	defer rsp.Body.Close()
 
-	data, err = ioutil.ReadAll(rsp.Body)
+	data, err = io.ReadAll(rsp.Body)
 	if err != nil {
 		return err
 	}

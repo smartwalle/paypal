@@ -1,26 +1,30 @@
-package paypal
+package paypal_test
 
 import (
-	"fmt"
+	"github.com/smartwalle/paypal"
 	"testing"
 )
 
 func TestPayPal_GetDisputeList(t *testing.T) {
-	var param = &DisputeListParam{}
+	var param = &paypal.DisputeListParam{}
 	param.PageSize = 10
-	var results, err = paypal.GetDisputeList(param)
+	var result, err = client.GetDisputeList(param)
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, dispute := range results.Items {
-		fmt.Println(dispute.DisputeId, dispute.Status)
+	for _, dispute := range result.Items {
+		t.Log(dispute.DisputeId, dispute.Status)
+	}
+
+	for _, link := range result.Links {
+		t.Log(link.Method, link.Rel, link.Href, link.EncType)
 	}
 }
 
 func TestPayPal_GetDisputeDetails(t *testing.T) {
-	//var results, err = paypal.GetDisputeDetails("PP-000-042-621-836")
-	//if err != nil {
-	//	t.Fatal(err)
-	//}
-	//fmt.Println(results.DisputeId, results.DisputedTransactions[0].InvoiceNumber)
+	var result, err = client.GetDisputeDetails("PP-000-042-621-836")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(result.DisputeId, result.DisputedTransactions[0].InvoiceNumber)
 }
