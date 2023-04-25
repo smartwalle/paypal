@@ -62,23 +62,6 @@ func (this *Client) BuildAPI(paths ...string) string {
 	return path
 }
 
-func (this *Client) doRequestWithAuth(method, url string, param, result interface{}) (err error) {
-	if this.Token == nil || this.Token.ExpiresAt.Before(time.Now()) {
-		this.Token, err = this.GetAccessToken()
-		if err != nil {
-			return err
-		}
-	}
-
-	var req *http.Request
-	req, err = this.request(method, url, param)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Authorization", "Bearer "+this.Token.AccessToken)
-	return this.doRequest(req, result)
-}
-
 func (this *Client) GetAccessToken() (token *Token, err error) {
 	var api = this.BuildAPI(kGetAccessTokenAPI)
 
@@ -99,16 +82,31 @@ func (this *Client) GetAccessToken() (token *Token, err error) {
 	return token, err
 }
 
-func (this *Client) request(method, url string, param interface{}) (*http.Request, error) {
+func (this *Client) doRequestWithAuth(method, url string, param, result interface{}) (err error) {
+	if this.Token == nil || this.Token.ExpiresAt.Before(time.Now()) {
+		this.Token, err = this.GetAccessToken()
+		if err != nil {
+			return err
+		}
+	}
+
 	var body io.Reader
 	if param != nil {
-		data, err := json.Marshal(param)
+		var data []byte
+		data, err = json.Marshal(param)
 		if err != nil {
-			return nil, err
+			return err
 		}
 		body = bytes.NewBuffer(data)
 	}
-	return http.NewRequest(method, url, body)
+
+	var req *http.Request
+	req, err = http.NewRequest(method, url, body)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+this.Token.AccessToken)
+	return this.doRequest(req, result)
 }
 
 func (this *Client) doRequest(req *http.Request, result interface{}) error {

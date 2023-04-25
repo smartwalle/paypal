@@ -120,7 +120,7 @@ func (this *Client) GetWebhookEvent(webhookId string, req *http.Request) (event 
 	verifyParam.TransmissionSig = req.Header.Get("Paypal-Transmission-Sig")
 	verifyParam.TransmissionTime = req.Header.Get("Paypal-Transmission-Time")
 	verifyParam.WebhookId = webhookId
-	verifyParam.WebhookEvent = jsonString(string(body))
+	verifyParam.WebhookEvent = jsonString(body)
 
 	verifyResp, err := this.verifyWebhookSignature(verifyParam)
 	if err != nil {
