@@ -12,18 +12,18 @@ import (
 )
 
 const (
-	kSandboxURL    = "https://api.sandbox.paypal.com"
-	kProductionURL = "https://api.paypal.com"
+	kSandbox    = "https://api.sandbox.paypal.com"
+	kProduction = "https://api.paypal.com"
 )
 
 const (
-	kGetAccessTokenAPI = "/v1/oauth2/token"
+	kGetAccessToken = "/v1/oauth2/token"
 )
 
 type Client struct {
 	clientId     string
 	secret       string
-	apiDomain    string
+	host         string
 	isProduction bool
 	Token        *Token
 	Client       *http.Client
@@ -36,15 +36,15 @@ func New(clientId, secret string, isProduction bool) (client *Client) {
 	client.secret = secret
 	client.isProduction = isProduction
 	if isProduction {
-		client.apiDomain = kProductionURL
+		client.host = kProduction
 	} else {
-		client.apiDomain = kSandboxURL
+		client.host = kSandbox
 	}
 	return client
 }
 
 func (this *Client) BuildAPI(paths ...string) string {
-	var path = this.apiDomain
+	var path = this.host
 	for _, p := range paths {
 		p = strings.TrimSpace(p)
 		if len(p) > 0 {
@@ -63,7 +63,7 @@ func (this *Client) BuildAPI(paths ...string) string {
 }
 
 func (this *Client) GetAccessToken() (token *Token, err error) {
-	var api = this.BuildAPI(kGetAccessTokenAPI)
+	var api = this.BuildAPI(kGetAccessToken)
 
 	var param = url.Values{}
 	param.Add("grant_type", "client_credentials")
@@ -134,7 +134,7 @@ func (this *Client) doRequest(req *http.Request, result interface{}) error {
 		return err
 	}
 
-	if req.URL.Path != kGetAccessTokenAPI {
+	if req.URL.Path != kGetAccessToken {
 		var buf = &bytes.Buffer{}
 		buf.WriteString("\n=========== Begin ============")
 		buf.WriteString("\n【请求信息】")
