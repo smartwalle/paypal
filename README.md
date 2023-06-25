@@ -1,5 +1,9 @@
 PayPal SDK for Golang
 
+## 帮助
+
+在集成的过程中有遇到问题，欢迎加 QQ 群 203357977 讨论。
+
 ## 已实现接口
 
 #### PaymentS API
