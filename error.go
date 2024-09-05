@@ -20,8 +20,8 @@ type ResponseError struct {
 	Details         []ErrorDetail  `json:"details"`
 }
 
-func (this *ResponseError) Error() string {
-	return fmt.Sprintf("[%s]%d %s [Name]%s [Message]%s", this.Response.Request.Method, this.Response.StatusCode, this.Response.Request.URL, this.Name, this.Message)
+func (err *ResponseError) Error() string {
+	return fmt.Sprintf("[%s]%d %s [Name]%s [Message]%s", err.Response.Request.Method, err.Response.StatusCode, err.Response.Request.URL, err.Name, err.Message)
 }
 
 type ErrorDetail struct {
@@ -35,6 +35,6 @@ type IdentityError struct {
 	ErrorDescription string         `json:"error_description"`
 }
 
-func (this *IdentityError) Error() string {
-	return fmt.Sprintf("[%s]%d %s [Error]%s [Description]%s", this.Response.Request.Method, this.Response.StatusCode, this.Response.Request.URL, this.Name, this.ErrorDescription)
+func (err *IdentityError) Error() string {
+	return fmt.Sprintf("[%s]%d %s [Error]%s [Description]%s", err.Response.Request.Method, err.Response.StatusCode, err.Response.Request.URL, err.Name, err.ErrorDescription)
 }

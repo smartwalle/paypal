@@ -32,19 +32,19 @@ func SetLogger(l Logger) {
 type nilLogger struct {
 }
 
-func (this *nilLogger) SetPrefix(prefix string) {
+func (log *nilLogger) SetPrefix(prefix string) {
 }
 
-func (this *nilLogger) Prefix() string {
+func (log *nilLogger) Prefix() string {
 	return ""
 }
 
-func (this *nilLogger) Println(args ...interface{}) {
+func (log *nilLogger) Println(args ...interface{}) {
 }
 
-func (this *nilLogger) Printf(format string, args ...interface{}) {
+func (log *nilLogger) Printf(format string, args ...interface{}) {
 }
 
-func (this *nilLogger) Output(calldepth int, s string) error {
+func (log *nilLogger) Output(calldepth int, s string) error {
 	return nil
 }

@@ -82,24 +82,24 @@ type DisputeListParam struct {
 	DisputeState          string
 }
 
-func (this *DisputeListParam) QueryString() string {
-	var p = url.Values{}
-	if len(this.StartTime) > 0 {
-		p.Set("start_time", this.StartTime)
+func (p *DisputeListParam) QueryString() string {
+	var v = url.Values{}
+	if len(p.StartTime) > 0 {
+		v.Set("start_time", p.StartTime)
 	}
-	if len(this.DisputedTransactionId) > 0 {
-		p.Set("disputed_transaction_id", this.DisputedTransactionId)
+	if len(p.DisputedTransactionId) > 0 {
+		v.Set("disputed_transaction_id", p.DisputedTransactionId)
 	}
-	if this.PageSize > 0 {
-		p.Set("page_size", fmt.Sprintf("%d", this.PageSize))
+	if p.PageSize > 0 {
+		v.Set("page_size", fmt.Sprintf("%d", p.PageSize))
 	}
-	if len(this.NextPageToken) > 0 {
-		p.Set("next_page_token", this.NextPageToken)
+	if len(p.NextPageToken) > 0 {
+		v.Set("next_page_token", p.NextPageToken)
 	}
-	if len(this.DisputeState) > 0 {
-		p.Set("dispute_state", this.DisputeState)
+	if len(p.DisputeState) > 0 {
+		v.Set("dispute_state", p.DisputeState)
 	}
-	return "?" + p.Encode()
+	return "?" + v.Encode()
 }
 
 type DisputeList struct {

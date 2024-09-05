@@ -8,8 +8,8 @@ const (
 
 type jsonString string
 
-func (this jsonString) MarshalJSON() ([]byte, error) {
-	return []byte(string(this)), nil
+func (s jsonString) MarshalJSON() ([]byte, error) {
+	return []byte(s), nil
 }
 
 type Token struct {

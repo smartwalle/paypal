@@ -62,37 +62,37 @@ type CreditCardListParam struct {
 	TotalRequired      bool
 }
 
-func (this *CreditCardListParam) QueryString() string {
-	var p = url.Values{}
-	if this.PageSize > 0 {
-		p.Set("page_size", fmt.Sprintf("%d", this.PageSize))
+func (p *CreditCardListParam) QueryString() string {
+	var v = url.Values{}
+	if p.PageSize > 0 {
+		v.Set("page_size", fmt.Sprintf("%d", p.PageSize))
 	}
-	if this.Page > 0 {
-		p.Set("page", fmt.Sprintf("%d", this.Page))
+	if p.Page > 0 {
+		v.Set("page", fmt.Sprintf("%d", p.Page))
 	}
-	if len(this.StartTime) > 0 {
-		p.Set("start_time", this.StartTime)
+	if len(p.StartTime) > 0 {
+		v.Set("start_time", p.StartTime)
 	}
-	if len(this.EndTime) > 0 {
-		p.Set("end_time", this.EndTime)
+	if len(p.EndTime) > 0 {
+		v.Set("end_time", p.EndTime)
 	}
-	if len(this.SortOrder) > 0 {
-		p.Set("sort_order", this.SortOrder)
+	if len(p.SortOrder) > 0 {
+		v.Set("sort_order", p.SortOrder)
 	}
-	if len(this.SortBy) > 0 {
-		p.Set("sort_by", this.SortBy)
+	if len(p.SortBy) > 0 {
+		v.Set("sort_by", p.SortBy)
 	}
-	if len(this.MerchantId) > 0 {
-		p.Set("merchant_id", this.MerchantId)
+	if len(p.MerchantId) > 0 {
+		v.Set("merchant_id", p.MerchantId)
 	}
-	if len(this.ExternalCardId) > 0 {
-		p.Set("external_card_id", this.ExternalCardId)
+	if len(p.ExternalCardId) > 0 {
+		v.Set("external_card_id", p.ExternalCardId)
 	}
-	if len(this.ExternalCustomerId) > 0 {
-		p.Set("external_customer_id", this.ExternalCustomerId)
+	if len(p.ExternalCustomerId) > 0 {
+		v.Set("external_customer_id", p.ExternalCustomerId)
 	}
-	p.Set("total_required", fmt.Sprintf("%t", this.TotalRequired))
-	return "?" + p.Encode()
+	v.Set("total_required", fmt.Sprintf("%t", p.TotalRequired))
+	return "?" + v.Encode()
 }
 
 type CreditCardList struct {

@@ -247,30 +247,30 @@ type PaymentListParam struct {
 	SortOrder  string
 }
 
-func (this *PaymentListParam) QueryString() string {
-	var p = url.Values{}
-	if len(this.StartId) > 0 {
-		p.Set("start_id", this.StartId)
+func (p *PaymentListParam) QueryString() string {
+	var v = url.Values{}
+	if len(p.StartId) > 0 {
+		v.Set("start_id", p.StartId)
 	}
-	if len(this.StartTime) > 0 {
-		p.Set("start_time", this.StartTime)
+	if len(p.StartTime) > 0 {
+		v.Set("start_time", p.StartTime)
 	}
-	if len(this.EndTime) > 0 {
-		p.Set("end_time", this.EndTime)
+	if len(p.EndTime) > 0 {
+		v.Set("end_time", p.EndTime)
 	}
-	if this.StartIndex > 0 {
-		p.Set("start_index", fmt.Sprintf("%d", this.StartIndex))
+	if p.StartIndex > 0 {
+		v.Set("start_index", fmt.Sprintf("%d", p.StartIndex))
 	}
-	if this.Count > 0 {
-		p.Set("count", fmt.Sprintf("%d", this.Count))
+	if p.Count > 0 {
+		v.Set("count", fmt.Sprintf("%d", p.Count))
 	}
-	if len(this.SortBy) > 0 {
-		p.Set("sort_by", this.SortBy)
+	if len(p.SortBy) > 0 {
+		v.Set("sort_by", p.SortBy)
 	}
-	if len(this.SortOrder) > 0 {
-		p.Set("sort_order", this.SortOrder)
+	if len(p.SortOrder) > 0 {
+		v.Set("sort_order", p.SortOrder)
 	}
-	return "?" + p.Encode()
+	return "?" + v.Encode()
 }
 
 type PaymentList struct {

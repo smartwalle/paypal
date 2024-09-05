@@ -54,29 +54,29 @@ type Event struct {
 	Links        []*Link      `json:"links,omitempty"`
 }
 
-func (this *Event) Sale() *Sale {
-	if s, ok := this.Resource.(*Sale); ok {
+func (e *Event) Sale() *Sale {
+	if s, ok := e.Resource.(*Sale); ok {
 		return s
 	}
 	return nil
 }
 
-func (this *Event) Invoice() *Invoice {
-	if s, ok := this.Resource.(*Invoice); ok {
+func (e *Event) Invoice() *Invoice {
+	if s, ok := e.Resource.(*Invoice); ok {
 		return s
 	}
 	return nil
 }
 
-func (this *Event) Dispute() *Dispute {
-	if s, ok := this.Resource.(*Dispute); ok {
+func (e *Event) Dispute() *Dispute {
+	if s, ok := e.Resource.(*Dispute); ok {
 		return s
 	}
 	return nil
 }
 
-func (this *Event) Refund() *Refund {
-	if s, ok := this.Resource.(*Refund); ok {
+func (e *Event) Refund() *Refund {
+	if s, ok := e.Resource.(*Refund); ok {
 		return s
 	}
 	return nil
