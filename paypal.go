@@ -43,8 +43,8 @@ func New(clientId, secret string, isProduction bool) (client *Client) {
 	return client
 }
 
-func (this *Client) BuildAPI(paths ...string) string {
-	var path = this.host
+func (c *Client) BuildAPI(paths ...string) string {
+	var path = c.host
 	for _, p := range paths {
 		p = strings.TrimSpace(p)
 		if len(p) > 0 {
@@ -62,17 +62,17 @@ func (this *Client) BuildAPI(paths ...string) string {
 	return path
 }
 
-func (this *Client) GetAccessToken() (token *Token, err error) {
-	var api = this.BuildAPI(kGetAccessToken)
+func (c *Client) GetAccessToken() (token *Token, err error) {
+	var api = c.BuildAPI(kGetAccessToken)
 
 	var param = url.Values{}
 	param.Add("grant_type", "client_credentials")
 
 	req, err := http.NewRequest("POST", api, strings.NewReader(param.Encode()))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	req.SetBasicAuth(this.clientId, this.secret)
+	req.SetBasicAuth(c.clientId, c.secret)
 
-	err = this.doRequest(req, &token)
+	err = c.doRequest(req, &token)
 	if err != nil {
 		return nil, err
 	}
@@ -82,9 +82,9 @@ func (this *Client) GetAccessToken() (token *Token, err error) {
 	return token, err
 }
 
-func (this *Client) doRequestWithAuth(method, url string, param, result interface{}) (err error) {
-	if this.Token == nil || this.Token.ExpiresAt.Before(time.Now()) {
-		this.Token, err = this.GetAccessToken()
+func (c *Client) doRequestWithAuth(method, url string, param, result interface{}) (err error) {
+	if c.Token == nil || c.Token.ExpiresAt.Before(time.Now()) {
+		c.Token, err = c.GetAccessToken()
 		if err != nil {
 			return err
 		}
@@ -105,11 +105,11 @@ func (this *Client) doRequestWithAuth(method, url string, param, result interfac
 	if err != nil {
 		return err
 	}
-	req.Header.Set("Authorization", "Bearer "+this.Token.AccessToken)
-	return this.doRequest(req, result)
+	req.Header.Set("Authorization", "Bearer "+c.Token.AccessToken)
+	return c.doRequest(req, result)
 }
 
-func (this *Client) doRequest(req *http.Request, result interface{}) error {
+func (c *Client) doRequest(req *http.Request, result interface{}) error {
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Accept-Language", "en_US")
 
@@ -123,7 +123,7 @@ func (this *Client) doRequest(req *http.Request, result interface{}) error {
 		data []byte
 	)
 
-	rsp, err = this.Client.Do(req)
+	rsp, err = c.Client.Do(req)
 	if err != nil {
 		return err
 	}

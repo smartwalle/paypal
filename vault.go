@@ -7,29 +7,29 @@ const (
 )
 
 // StoreCreditCard https://developer.paypal.com/docs/api/vault/#credit-cards_create
-func (this *Client) StoreCreditCard(param *CreditCard) (result *CreditCard, err error) {
-	var api = this.BuildAPI(kCreditCards)
-	err = this.doRequestWithAuth(http.MethodPost, api, param, &result)
+func (c *Client) StoreCreditCard(param *CreditCard) (result *CreditCard, err error) {
+	var api = c.BuildAPI(kCreditCards)
+	err = c.doRequestWithAuth(http.MethodPost, api, param, &result)
 	return result, err
 }
 
 // GetCreditCardList https://developer.paypal.com/docs/api/vault/#credit-cards_list
-func (this *Client) GetCreditCardList(param *CreditCardListParam) (result *CreditCardList, err error) {
-	var api = this.BuildAPI(kCreditCards) + param.QueryString()
-	err = this.doRequestWithAuth(http.MethodGet, api, nil, &result)
+func (c *Client) GetCreditCardList(param *CreditCardListParam) (result *CreditCardList, err error) {
+	var api = c.BuildAPI(kCreditCards) + param.QueryString()
+	err = c.doRequestWithAuth(http.MethodGet, api, nil, &result)
 	return result, err
 }
 
 // DeleteCreditCard https://developer.paypal.com/docs/api/vault/#credit-cards_delete
-func (this *Client) DeleteCreditCard(creditCardId string) (err error) {
-	var api = this.BuildAPI(kCreditCards, creditCardId)
-	err = this.doRequestWithAuth(http.MethodDelete, api, nil, nil)
+func (c *Client) DeleteCreditCard(creditCardId string) (err error) {
+	var api = c.BuildAPI(kCreditCards, creditCardId)
+	err = c.doRequestWithAuth(http.MethodDelete, api, nil, nil)
 	return err
 }
 
 // GetCreditCardDetails https://developer.paypal.com/docs/api/vault/#credit-cards_delete
-func (this *Client) GetCreditCardDetails(creditCardId string) (result *CreditCard, err error) {
-	var api = this.BuildAPI(kCreditCards, creditCardId)
-	err = this.doRequestWithAuth(http.MethodGet, api, nil, &result)
+func (c *Client) GetCreditCardDetails(creditCardId string) (result *CreditCard, err error) {
+	var api = c.BuildAPI(kCreditCards, creditCardId)
+	err = c.doRequestWithAuth(http.MethodGet, api, nil, &result)
 	return result, err
 }

@@ -7,36 +7,36 @@ const (
 )
 
 // CreateWebExperienceProfile https://developer.paypal.com/docs/api/payment-experience/#web-profile
-func (this *Client) CreateWebExperienceProfile(param *WebProfiles) (result *WebProfiles, err error) {
-	var api = this.BuildAPI(kWebProfiles)
-	err = this.doRequestWithAuth(http.MethodPost, api, param, &result)
+func (c *Client) CreateWebExperienceProfile(param *WebProfiles) (result *WebProfiles, err error) {
+	var api = c.BuildAPI(kWebProfiles)
+	err = c.doRequestWithAuth(http.MethodPost, api, param, &result)
 	return result, err
 }
 
 // GetWebExperienceProfileList https://developer.paypal.com/docs/api/payment-experience/#web-profiles_get-list
-func (this *Client) GetWebExperienceProfileList() (result []*WebProfiles, err error) {
-	var api = this.BuildAPI(kWebProfiles)
-	err = this.doRequestWithAuth(http.MethodGet, api, nil, &result)
+func (c *Client) GetWebExperienceProfileList() (result []*WebProfiles, err error) {
+	var api = c.BuildAPI(kWebProfiles)
+	err = c.doRequestWithAuth(http.MethodGet, api, nil, &result)
 	return result, err
 }
 
 // DeleteWebExperienceProfile https://developer.paypal.com/docs/api/payment-experience/#web-profiles_delete
-func (this *Client) DeleteWebExperienceProfile(profileId string) (err error) {
-	var api = this.BuildAPI(kWebProfiles, profileId)
-	err = this.doRequestWithAuth(http.MethodDelete, api, nil, nil)
+func (c *Client) DeleteWebExperienceProfile(profileId string) (err error) {
+	var api = c.BuildAPI(kWebProfiles, profileId)
+	err = c.doRequestWithAuth(http.MethodDelete, api, nil, nil)
 	return err
 }
 
 // GetWebExperienceProfileDetails https://developer.paypal.com/docs/api/payment-experience/#web-profiles_get
-func (this *Client) GetWebExperienceProfileDetails(profileId string) (result *WebProfiles, err error) {
-	var api = this.BuildAPI(kWebProfiles, profileId)
-	err = this.doRequestWithAuth(http.MethodGet, api, nil, &result)
+func (c *Client) GetWebExperienceProfileDetails(profileId string) (result *WebProfiles, err error) {
+	var api = c.BuildAPI(kWebProfiles, profileId)
+	err = c.doRequestWithAuth(http.MethodGet, api, nil, &result)
 	return result, err
 }
 
 // UpdateWebExperienceProfiles https://developer.paypal.com/docs/api/payment-experience/#web-profiles_update
-func (this *Client) UpdateWebExperienceProfiles(profileId string, param *WebProfiles) (err error) {
-	var api = this.BuildAPI(kWebProfiles, profileId)
-	err = this.doRequestWithAuth(http.MethodGet, api, param, nil)
+func (c *Client) UpdateWebExperienceProfiles(profileId string, param *WebProfiles) (err error) {
+	var api = c.BuildAPI(kWebProfiles, profileId)
+	err = c.doRequestWithAuth(http.MethodGet, api, param, nil)
 	return err
 }
